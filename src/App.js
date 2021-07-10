@@ -1,35 +1,64 @@
+import { lazy } from 'react';
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 
 import AuthRoute from './routes/AuthRoute';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
-import {
-  Register,
-  Login,
-  RedirectPage,
-  ParkingSection,
-  BookVehicle,
-  ViewBooking,
-  Feedback,
-} from './pages';
+import Suspense from './components/Suspense/SuspenseLoader';
 
 import 'antd/dist/antd.css';
 import './styles/style.css';
+
+const RedirectPage = lazy(() => import('./pages/RedirectPage'));
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+const ParkingSection = lazy(() => import('./pages/ParkingSection'));
+const BookVehicle = lazy(() => import('./pages/BookVehicle'));
+const ViewBooking = lazy(() => import('./pages/ViewBooking'));
+const Feedback = lazy(() => import('./pages/Feedback'));
 
 function App() {
   return (
     <Router>
       <Switch>
         <ErrorBoundary>
-          <Route exact path='/' component={RedirectPage} />
-          <Route path='/login' component={Login} />
-          <Route path='/register' component={Register} />
-          <AuthRoute path='/feedback' component={Feedback} />
+          <Route exact path='/'>
+            <Suspense>
+              <RedirectPage />
+            </Suspense>
+          </Route>
+          <Route path='/login'>
+            <Suspense>
+              <Login />
+            </Suspense>
+          </Route>
+          <Route path='/register'>
+            <Suspense>
+              <Register />
+            </Suspense>
+          </Route>
+          <AuthRoute path='/feedback'>
+            <Suspense>
+              <Feedback />
+            </Suspense>
+          </AuthRoute>
 
           {/* user routes */}
 
-          <AuthRoute path='/parking-section' component={ParkingSection} />
-          <AuthRoute path='/book-vehicle' component={BookVehicle} />
-          <AuthRoute path='/view-booking' component={ViewBooking} />
+          <AuthRoute path='/parking-section'>
+            <Suspense>
+              <ParkingSection />
+            </Suspense>
+          </AuthRoute>
+          <AuthRoute path='/book-vehicle'>
+            <Suspense>
+              <BookVehicle />
+            </Suspense>
+          </AuthRoute>
+          <AuthRoute path='/view-booking'>
+            <Suspense>
+              <ViewBooking />
+            </Suspense>
+          </AuthRoute>
 
           {/* admin routes */}
         </ErrorBoundary>
