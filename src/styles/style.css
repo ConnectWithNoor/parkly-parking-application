@@ -212,6 +212,10 @@ body {
   margin-right: auto;
 }
 
+.m-center {
+  margin: 0 auto;
+}
+
 .m-0 {
   margin: 0;
 }
@@ -357,6 +361,10 @@ body {
 
 .w-75 {
   width: 75%;
+}
+
+.w-90 {
+  width: 90%;
 }
 
 .h-50 {

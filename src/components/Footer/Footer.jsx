@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 export const Footer = () => {
   return (
@@ -9,7 +8,11 @@ export const Footer = () => {
           &copy; {new Date().getFullYear()}
         </div>
         <div className='d-flex'>
-          <div className='p-1rem f-nowrap'>Noor Muhammad</div>
+          <a
+            href='https://www.linkedin.com/in/connectwithnoor'
+            className='p-1rem f-nowrap'>
+            Noor Muhammad
+          </a>
         </div>
       </div>
     </>

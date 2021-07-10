@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import Footer from '../components/Footer/Footer';
 
-import LoginIllustration from '../assets/images/login-illustration.jpg';
+import LoginIllustration from '../assets/images/auth-illustration.jpg';
 
 function Login() {
   const [user, setUser] = useState({});
@@ -29,7 +29,7 @@ function Login() {
       <Row className='h-90vh'>
         <Col xs={0} sm={0} md={8} lg={10} xl={12}>
           <div className='d-flex flex-column justify-content-center p-4rem'>
-            <p className='t-center f-lato font-size-4'>Parkly</p>
+            <p className='f-bold t-center f-lato font-size-4'>Parkly</p>
             <img
               className='w-100 radius-2'
               style={{ height: '25rem' }}
@@ -41,7 +41,7 @@ function Login() {
         <Col xs={24} sm={24} md={14} lg={12} xl={12}>
           <div className='d-flex flex-column justify-content-center p-4rem '>
             <div className='mt-2rem w-100'>
-              <h1 className='f-bold t-center t-open-sans font-size-4'>Login</h1>
+              <h1 className=' t-center t-open-sans font-size-4'>Login</h1>
             </div>
             <Form size='large' onFinish={handleSubmit}>
               <Form.Item name='username'>
