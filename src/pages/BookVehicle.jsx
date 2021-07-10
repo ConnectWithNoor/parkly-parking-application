@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DatePicker, Row, Col, Space, TimePicker, Select, Alert } from 'antd';
+import moment from 'moment';
 
 import AppLayout from '../Layout/AppLayout';
 
@@ -17,7 +18,10 @@ function BookVehicle() {
 
   const onSelectHoursChange = (hour) => {
     if (!bookingTime) return setError('Please select time First');
-    // need to add logic here.
+
+    if (moment(bookingTime).add(hour, 'h').format('HH') >= 18)
+      return setError('Time should not exceed 18:00 Hr');
+
     setNoOfHour(hour);
   };
 
