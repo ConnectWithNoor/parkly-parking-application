@@ -7,22 +7,22 @@ import {
 
 const userRoutes = [
   {
-    to: '/user/#parking-section',
+    to: '/parking-section',
     icon: <TabletOutlined />,
     text: 'Parking section',
   },
   {
-    to: '/user/#book-vehicle',
+    to: '/book-vehicle',
     icon: <CarOutlined />,
     text: 'Book Vehicle',
   },
   {
-    to: '/user/#view-booking',
+    to: '/view-booking',
     icon: <ClockCircleOutlined />,
     text: 'View Bookings',
   },
   {
-    to: '/user/#feedback',
+    to: '/feedback',
     icon: <UserOutlined />,
     text: 'Feedback',
   },
