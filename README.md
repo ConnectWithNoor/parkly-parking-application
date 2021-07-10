@@ -6,9 +6,15 @@ space in commercial areas that unnecessary consumes time.
 
 Made with love using ReactJS ❤
 
-## Libariries Used
+## Frameworks Used
 
 -
+
+## Libraries Used
+
+- Ant-design
+- React-Router-Dom
+- @ant-design/icons
 
 ## Features
 
