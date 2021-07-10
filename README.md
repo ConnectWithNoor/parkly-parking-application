@@ -15,6 +15,7 @@ Made with love using ReactJS ❤
 - Ant-design
 - React-Router-Dom
 - @ant-design/icons
+- Moment
 
 ## Features
 

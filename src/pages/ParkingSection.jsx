@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Col, Row, Button } from 'antd';
+import { Col, Row, Button, Divider } from 'antd';
 import { useHistory } from 'react-router-dom';
 
 import AppLayout from '../Layout/AppLayout';
@@ -30,6 +30,7 @@ function ParkingSection() {
             Next
           </Button>
         </div>
+        <Divider />
         <div className='mt-1rem'>
           <Row>
             <Col xs={24} sm={24} md={8} lg={8} xl={8}>
