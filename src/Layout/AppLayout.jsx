@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Layout, Menu, Dropdown, Spin, Drawer, Button } from 'antd';
+import React, { useEffect, useState, useContext } from 'react';
+import { Layout, Menu, Spin, Drawer, Button } from 'antd';
 import { Link, useLocation, useHistory, Redirect } from 'react-router-dom';
 import { MenuFoldOutlined } from '@ant-design/icons';
 
+import { AppContext } from '../context/AppContext';
 import { adminRoutes, userRoutes } from '../routes/sidebarRoutes';
-
 import Footer from '../components/Footer/Footer';
 
 import './AppLayout.css';
@@ -16,8 +16,9 @@ const AppLayout = ({ children }) => {
   const location = useLocation();
   const [isAuthenticated] = useState(true);
   const [loading] = useState(false);
-  const [userRole] = useState('root');
-  const [user] = useState({});
+
+  const { userDetails } = useContext(AppContext);
+
   let history = useHistory();
 
   useEffect(() => {
@@ -46,7 +47,7 @@ const AppLayout = ({ children }) => {
           theme='light'
           selectedKeys={[location.pathname]}
           className='h-100'>
-          {userRole === 'root'
+          {userDetails.role === 'root'
             ? adminRoutes.map((route) => {
                 const { to, icon, text } = route;
                 return (
@@ -69,14 +70,16 @@ const AppLayout = ({ children }) => {
         <Header className='site-layout-background'>
           <div className='d-flex '>
             <div className='c-pointer f-icon'>
-              <Button onClick={() => setCollapsed(true)}>
+              <Button onClick={() => setCollapsed(true)} className='bg-white'>
                 <MenuFoldOutlined />
                 Menu
               </Button>
             </div>
 
             <div className='d-flex align-items-center ml-auto'>
-              <Button>Log out User</Button>
+              <Button type='primary' className='bg-dark' onClick={handleLogout}>
+                Log out {userDetails.name}
+              </Button>
             </div>
           </div>
         </Header>

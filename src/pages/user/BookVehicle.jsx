@@ -75,6 +75,7 @@ function BookVehicle() {
           size='large'
           block
           disabled={!selectedSpot}
+          className='bg-dark'
           onClick={handleNextStep}>
           Next
         </Button>

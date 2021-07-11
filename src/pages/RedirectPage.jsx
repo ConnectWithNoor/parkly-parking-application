@@ -1,22 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 
+import { AppContext } from '../context/AppContext';
+
 function RedirectPage() {
-  const [userLogged] = useState(true);
-  const [userRole, setUserRole] = useState(null);
+  const { userDetails } = useContext(AppContext);
 
-  useEffect(() => {
-    const checkUserDetails = async () => {
-      if (userLogged === true) {
-        setUserRole('root');
-      }
-    };
-
-    checkUserDetails();
-  }, [userLogged]);
-
-  return userLogged ? (
-    userRole === 'root' ? (
+  return userDetails ? (
+    userDetails.role === 'root' ? (
       <Redirect to='/view-students' />
     ) : (
       <Redirect to='/parking-section' />

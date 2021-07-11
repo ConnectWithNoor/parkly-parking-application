@@ -26,7 +26,8 @@ function ParkingSection() {
           <Button
             type='primary'
             disabled={!parkingSpace}
-            onClick={handleNextStep}>
+            onClick={handleNextStep}
+            className='bg-dark'>
             Next
           </Button>
         </div>

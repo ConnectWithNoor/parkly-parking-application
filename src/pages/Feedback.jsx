@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Table, Input, Button, Modal, Space } from 'antd';
+import { Table, Input, Button, Modal } from 'antd';
 
 import { feedbackTableColumn, dataSource } from '../utils/FeedbackTableColumns';
 import AppLayout from '../Layout/AppLayout';
