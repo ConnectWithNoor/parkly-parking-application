@@ -82,8 +82,8 @@ function Login() {
               <Button
                 type='primary'
                 htmlType='submit'
-                className='mt-4rem w-100'
-                style={{ height: '3rem', backgroundColor: '#001529' }}>
+                className='mt-4rem w-100 bg-dark'
+                style={{ height: '3rem' }}>
                 Sign In
               </Button>
             </Form>

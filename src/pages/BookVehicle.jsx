@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { Alert } from 'antd';
+import React, { useState } from 'react';
+import { Alert, Divider, Row, Button } from 'antd';
 import moment from 'moment';
 
 import AppLayout from '../Layout/AppLayout';
 
 import BookVehicleDuration from '../views/BookVehicleDuration/BookVehicleDuration';
+import BookVehicleSpot from '../views/BookVehicleSpot/BookVehicleSpot';
 
 function BookVehicle() {
   const [error, setError] = useState(null);
   const [bookingDate, setBookingDate] = useState('');
   const [bookingTime, setBookingTime] = useState(false);
   const [noOfHour, setNoOfHour] = useState(null);
+  const [selectedSpot, setSelectedSpot] = useState(null);
 
   const onDatePickerChange = (date) => {
     setBookingDate(date);
@@ -27,6 +29,10 @@ function BookVehicle() {
 
   const handleTimeChange = (time) => {
     setBookingTime(time);
+  };
+
+  const handleNextStep = () => {
+    console.log(123);
   };
 
   return (
@@ -53,6 +59,25 @@ function BookVehicle() {
             />
           </div>
         </div>
+        <Divider />
+        <Row>
+          {Array.from({ length: 12 }).map((a, i) => (
+            <BookVehicleSpot
+              key={i}
+              setSelectedSpot={setSelectedSpot}
+              spotId={i + 1}
+              selectedSpot={selectedSpot}
+            />
+          ))}
+        </Row>
+        <Button
+          type='primary'
+          size='large'
+          block
+          disabled={!selectedSpot}
+          onClick={handleNextStep}>
+          Next
+        </Button>
       </div>
     </AppLayout>
   );

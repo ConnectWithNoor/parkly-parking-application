@@ -15,6 +15,7 @@
   --gray5: #f0f3f7;
   --logo: #002140;
   --black: #000;
+  --dark: #001529;
   --black-light: #00000073;
   --green: #4ec21e;
   --yellow: #fbd437;
@@ -68,6 +69,10 @@ body {
 
 .bg-gray-5 {
   background-color: var(--gray5);
+}
+
+.bg-dark {
+  background-color: var(--dark);
 }
 
 .bg-logo {
@@ -422,6 +427,13 @@ body {
 
 .selected {
   background-color: rgba(0, 0, 0, 0.06);
+  box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.selected-blue {
+  color: #fff;
+  background: #40a9ff;
+  border-color: #40a9ff;
   box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.1);
 }
 

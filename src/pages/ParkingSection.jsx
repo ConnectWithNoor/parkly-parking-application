@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense } from 'react';
+import React, { useState } from 'react';
 import { Col, Row, Button, Divider, Spin, Image } from 'antd';
 import { useHistory } from 'react-router-dom';
 

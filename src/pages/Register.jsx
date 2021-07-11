@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Row, Col, Form, Spin, Input, Alert, Button } from 'antd';
+import { Row, Col, Form, Alert, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
@@ -81,8 +81,8 @@ function Register() {
               <Button
                 type='primary'
                 htmlType='submit'
-                className='mt-4rem w-100'
-                style={{ height: '3rem', backgroundColor: '#001529' }}>
+                className='mt-4rem w-100 bg-dark'
+                style={{ height: '3rem' }}>
                 Register
               </Button>
             </Form>

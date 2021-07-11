@@ -13,7 +13,7 @@ function RedirectPage() {
     };
 
     checkUserDetails();
-  }, []);
+  }, [userLogged]);
 
   return userLogged ? (
     userRole === 'root' ? (
