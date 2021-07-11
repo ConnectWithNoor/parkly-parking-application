@@ -1,8 +1,8 @@
 import React from 'react';
 import { Table } from 'antd';
 
-import AppLayout from '../Layout/AppLayout';
-import { columns, dataSource } from '../utils/userViewBookingTableColumn';
+import AppLayout from '../../Layout/AppLayout';
+import { columns, dataSource } from '../../utils/viewStudentsTableColumn';
 
 function viewStudents() {
   return (

@@ -8,7 +8,7 @@ function RedirectPage() {
   useEffect(() => {
     const checkUserDetails = async () => {
       if (userLogged === true) {
-        setUserRole('user');
+        setUserRole('root');
       }
     };
 
@@ -17,7 +17,7 @@ function RedirectPage() {
 
   return userLogged ? (
     userRole === 'root' ? (
-      <Redirect to='/admin' />
+      <Redirect to='/view-students' />
     ) : (
       <Redirect to='/parking-section' />
     )

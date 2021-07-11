@@ -21,6 +21,7 @@ const ParkingSection = lazy(() => import('./pages/user/ParkingSection'));
 const BookVehicle = lazy(() => import('./pages/user/BookVehicle'));
 
 // admin pages
+const viewStudents = lazy(() => import('./pages/admin/viewStudents'));
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
           <AuthRoute path='/book-vehicle' component={BookVehicle} />
 
           {/* admin routes */}
+          <AuthRoute path='/view-students' component={viewStudents} />
 
           {/* for all other routes */}
 
