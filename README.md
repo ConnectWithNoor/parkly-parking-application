@@ -6,9 +6,11 @@ space in commercial areas that unnecessary consumes time.
 
 Made with love using ReactJS ❤
 
-## Frameworks Used
+## Technologies Used
 
--
+- ReactJS
+- Firebase Hosting
+- Firebase Cloud DB
 
 ## Libraries Used
 

@@ -1,6 +1,7 @@
-import { lazy } from 'react';
+import { lazy, useContext } from 'react';
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 
+import { AppContext } from './context/AppContext';
 import AuthRoute from './routes/AuthRoute';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import SuspenseLoader from './components/Suspense/SuspenseLoader';
@@ -24,6 +25,7 @@ const BookVehicle = lazy(() => import('./pages/user/BookVehicle'));
 const viewStudents = lazy(() => import('./pages/admin/viewStudents'));
 
 function App() {
+  const { userDetails } = useContext(AppContext);
   return (
     <Router>
       <Switch>
@@ -49,12 +51,17 @@ function App() {
           <AuthRoute path='/view-booking' component={ViewBooking} />
 
           {/* user routes */}
-
-          <AuthRoute path='/parking-section' component={ParkingSection} />
-          <AuthRoute path='/book-vehicle' component={BookVehicle} />
+          {userDetails.role === 'user' && (
+            <>
+              <AuthRoute path='/parking-section' component={ParkingSection} />
+              <AuthRoute path='/book-vehicle' component={BookVehicle} />
+            </>
+          )}
 
           {/* admin routes */}
-          <AuthRoute path='/view-students' component={viewStudents} />
+          {userDetails.role === 'root' && (
+            <AuthRoute path='/view-students' component={viewStudents} />
+          )}
 
           {/* for all other routes */}
 
