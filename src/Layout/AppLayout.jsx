@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Layout, Menu, Dropdown, Spin, Drawer, Button } from 'antd';
 import { Link, useLocation, useHistory, Redirect } from 'react-router-dom';
-import { DownOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import { MenuFoldOutlined } from '@ant-design/icons';
 
 import { adminRoutes, userRoutes } from '../routes/sidebarRoutes';
 
@@ -76,20 +76,7 @@ const AppLayout = ({ children }) => {
             </div>
 
             <div className='d-flex align-items-center ml-auto'>
-              <Dropdown
-                overlay={
-                  <Menu>
-                    <Menu.Item onClick={handleLogout}>Logout User</Menu.Item>
-                  </Menu>
-                }
-                trigger={['click']}>
-                <div className='d-flex align-items-center c-pointer'>
-                  <p className='m-auto ml-1rem mr-1rem'>
-                    {user?.name} {user?.surname}
-                  </p>
-                  <DownOutlined />
-                </div>
-              </Dropdown>
+              <Button>Log out User</Button>
             </div>
           </div>
         </Header>

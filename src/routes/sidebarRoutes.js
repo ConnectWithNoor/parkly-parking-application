@@ -5,7 +5,6 @@ import {
   MailOutlined,
   LockOutlined,
   InfoCircleOutlined,
-  LogoutOutlined,
 } from '@ant-design/icons';
 
 const userRoutes = [
@@ -29,11 +28,6 @@ const userRoutes = [
     icon: <MailOutlined />,
     text: 'Feedback',
   },
-  {
-    to: '/logout',
-    icon: <LogoutOutlined />,
-    text: 'Logout',
-  },
 ];
 
 const adminRoutes = [
@@ -51,11 +45,6 @@ const adminRoutes = [
     to: '/feedback',
     icon: <MailOutlined />,
     text: 'Feedback',
-  },
-  {
-    to: '/logout',
-    icon: <LogoutOutlined />,
-    text: 'Logout',
   },
 ];
 
