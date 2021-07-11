@@ -4,8 +4,8 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
 import Footer from '../components/Footer/Footer';
-
 import FormInputField from '../components/FormInputField/FormInputField';
+
 import LoginIllustration from '../assets/images/auth-illustration.jpg';
 
 function Login() {
@@ -82,7 +82,7 @@ function Login() {
               <Button
                 type='primary'
                 htmlType='submit'
-                className='mt-4rem w-100 bg-blue-2'
+                className='mt-4rem w-100'
                 style={{ height: '3rem', backgroundColor: '#001529' }}>
                 Sign In
               </Button>
