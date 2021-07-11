@@ -3,7 +3,7 @@ import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 
 import AuthRoute from './routes/AuthRoute';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
-import Suspense from './components/Suspense/SuspenseLoader';
+import SuspenseLoader from './components/Suspense/SuspenseLoader';
 
 import 'antd/dist/antd.css';
 import './styles/style.css';
@@ -22,43 +22,28 @@ function App() {
       <Switch>
         <ErrorBoundary>
           <Route exact path='/'>
-            <Suspense>
+            <SuspenseLoader>
               <RedirectPage />
-            </Suspense>
+            </SuspenseLoader>
           </Route>
           <Route path='/login'>
-            <Suspense>
+            <SuspenseLoader>
               <Login />
-            </Suspense>
+            </SuspenseLoader>
           </Route>
           <Route path='/register'>
-            <Suspense>
+            <SuspenseLoader>
               <Register />
-            </Suspense>
+            </SuspenseLoader>
           </Route>
-          <AuthRoute path='/feedback'>
-            <Suspense>
-              <Feedback />
-            </Suspense>
-          </AuthRoute>
+
+          <AuthRoute path='/feedback' component={Feedback} />
 
           {/* user routes */}
 
-          <AuthRoute path='/parking-section'>
-            <Suspense>
-              <ParkingSection />
-            </Suspense>
-          </AuthRoute>
-          <AuthRoute path='/book-vehicle'>
-            <Suspense>
-              <BookVehicle />
-            </Suspense>
-          </AuthRoute>
-          <AuthRoute path='/view-booking'>
-            <Suspense>
-              <ViewBooking />
-            </Suspense>
-          </AuthRoute>
+          <AuthRoute path='/parking-section' component={ParkingSection} />
+          <AuthRoute path='/book-vehicle' component={BookVehicle} />
+          <AuthRoute path='/view-booking' component={ViewBooking} />
 
           {/* admin routes */}
         </ErrorBoundary>

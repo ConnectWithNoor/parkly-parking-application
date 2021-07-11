@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import SuspenseLoader from '../components/Suspense/SuspenseLoader';
 
 const AuthRoute = ({ component: Component, ...rest }) => {
   const isAuth = true;
@@ -7,7 +8,13 @@ const AuthRoute = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={(props) =>
-        isAuth ? <Component {...props} /> : <Redirect to={'/login'} />
+        isAuth ? (
+          <SuspenseLoader>
+            <Component {...props} />
+          </SuspenseLoader>
+        ) : (
+          <Redirect to={'/login'} />
+        )
       }
     />
   );
