@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { Row, Col, Form, Spin, Input, Alert, Button } from 'antd';
+import { Row, Col, Form, Alert, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
 import Footer from '../components/Footer/Footer';
 
+import FormInputField from '../components/FormInputField/FormInputField';
 import LoginIllustration from '../assets/images/auth-illustration.jpg';
 
 function Login() {
   const [user, setUser] = useState({});
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,11 +26,11 @@ function Login() {
   };
 
   return (
-    <div className='h-100vh'>
+    <div className='h-100vh bg-gray-3'>
       <Row className='h-90vh'>
         <Col xs={0} sm={0} md={8} lg={10} xl={12}>
           <div className='d-flex flex-column justify-content-center p-4rem'>
-            <p className='f-bold t-center f-lato font-size-4'>Parkly</p>
+            <p className='t-center t-open-sans f-bold font-size-4'>Parkly</p>
             <img
               className='w-100 radius-2'
               style={{ height: '25rem' }}
@@ -41,32 +42,43 @@ function Login() {
         <Col xs={24} sm={24} md={14} lg={12} xl={12}>
           <div className='d-flex flex-column justify-content-center p-4rem '>
             <div className='mt-2rem w-100'>
-              <h1 className=' t-center t-open-sans font-size-4'>Login</h1>
+              <h1 className=' t-center t-open-sans f-bold font-size-4'>
+                Login
+              </h1>
             </div>
             <Form size='large' onFinish={handleSubmit}>
-              <Form.Item name='username'>
-                <Input
-                  prefix={<UserOutlined className='site-form-item-icon' />}
-                  placeholder='Email'
-                  type='email'
-                  name='email'
-                  value={user.username}
-                  onChange={handleChange}
-                  required
+              {/* username */}
+              <FormInputField
+                itemName='username'
+                IconComponent={UserOutlined}
+                placeholder='Email'
+                type='email'
+                targetName='email'
+                targetValue={user.username}
+                handleChange={handleChange}
+              />
+
+              {/* password */}
+
+              <FormInputField
+                itemName='password'
+                IconComponent={LockOutlined}
+                placeholder='Password'
+                type='Password'
+                targetName='password'
+                targetValue={user.password}
+                handleChange={handleChange}
+              />
+
+              {error && (
+                <Alert
+                  message={error}
+                  type='error'
+                  showIcon
+                  closable
+                  onClose={() => setError(null)}
                 />
-              </Form.Item>
-              <Form.Item name='password' className='mb-0'>
-                <Input
-                  prefix={<LockOutlined className='site-form-item-icon' />}
-                  type='password'
-                  placeholder='Password'
-                  name='password'
-                  value={user.password}
-                  onChange={handleChange}
-                  required
-                />
-              </Form.Item>
-              {error && <Alert message={error} type='error' closable />}
+              )}
               <Button
                 type='primary'
                 htmlType='submit'
