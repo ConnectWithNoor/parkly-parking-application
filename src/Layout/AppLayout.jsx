@@ -16,7 +16,7 @@ const AppLayout = ({ children }) => {
   const location = useLocation();
   const [isAuthenticated] = useState(true);
   const [loading] = useState(false);
-  const [userRole] = useState('user');
+  const [userRole] = useState('root');
   const [user] = useState({});
   let history = useHistory();
 
@@ -46,7 +46,7 @@ const AppLayout = ({ children }) => {
           theme='light'
           selectedKeys={[location.pathname]}
           className='h-100'>
-          {userRole === 'admin'
+          {userRole === 'root'
             ? adminRoutes.map((route) => {
                 const { to, icon, text } = route;
                 return (

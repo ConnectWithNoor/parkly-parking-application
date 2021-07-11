@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Row, Col, Form, Alert, Button } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
 import Footer from '../components/Footer/Footer';
@@ -36,9 +36,19 @@ function Register() {
               </h1>
             </div>
             <Form size='large' onFinish={handleSubmit}>
-              {/* email */}
+              {/* Name */}
               <FormInputField
                 IconComponent={UserOutlined}
+                itemName='name'
+                placeholder='Name'
+                type='text'
+                targetName='name'
+                targetValue={user.name}
+                handleChange={handleChange}
+              />
+              {/* email */}
+              <FormInputField
+                IconComponent={MailOutlined}
                 itemName='email'
                 placeholder='Email'
                 type='email'

@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Col, Row, Button, Divider, Spin, Image } from 'antd';
 import { useHistory } from 'react-router-dom';
 
-import AppLayout from '../Layout/AppLayout';
+import AppLayout from '../../Layout/AppLayout';
 
-import spaceOne from '../assets/images/parking-space-1.jpg';
-import spaceTwo from '../assets/images/parking-space-2.jpg';
-import spaceThree from '../assets/images/parking-space-3.jpg';
+import spaceOne from '../../assets/images/parking-space-1.jpg';
+import spaceTwo from '../../assets/images/parking-space-2.jpg';
+import spaceThree from '../../assets/images/parking-space-3.jpg';
 
 function ParkingSection() {
   const [parkingSpace, setParkingSpace] = useState(null);

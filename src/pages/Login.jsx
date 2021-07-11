@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Row, Col, Form, Alert, Button } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
 import Footer from '../components/Footer/Footer';
@@ -50,7 +50,7 @@ function Login() {
               {/* username */}
               <FormInputField
                 itemName='username'
-                IconComponent={UserOutlined}
+                IconComponent={MailOutlined}
                 placeholder='Email'
                 type='email'
                 targetName='email'

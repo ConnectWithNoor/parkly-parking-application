@@ -1,15 +1,18 @@
 import {
-  TabletOutlined,
   CarOutlined,
   ClockCircleOutlined,
   UserOutlined,
+  MailOutlined,
+  LockOutlined,
+  InfoCircleOutlined,
+  LogoutOutlined,
 } from '@ant-design/icons';
 
 const userRoutes = [
   {
     to: '/parking-section',
-    icon: <TabletOutlined />,
-    text: 'Parking section',
+    icon: <InfoCircleOutlined />,
+    text: 'Parking Section',
   },
   {
     to: '/book-vehicle',
@@ -23,16 +26,37 @@ const userRoutes = [
   },
   {
     to: '/feedback',
-    icon: <UserOutlined />,
+    icon: <MailOutlined />,
     text: 'Feedback',
   },
   {
     to: '/logout',
-    icon: <TabletOutlined />,
+    icon: <LogoutOutlined />,
     text: 'Logout',
   },
 ];
 
-const adminRoutes = [];
+const adminRoutes = [
+  {
+    to: '/view-students',
+    icon: <UserOutlined />,
+    text: 'View Students',
+  },
+  {
+    to: '/view-booking',
+    icon: <LockOutlined />,
+    text: 'View Bookings',
+  },
+  {
+    to: '/feedback',
+    icon: <MailOutlined />,
+    text: 'Feedback',
+  },
+  {
+    to: '/logout',
+    icon: <LogoutOutlined />,
+    text: 'Logout',
+  },
+];
 
 export { userRoutes, adminRoutes };

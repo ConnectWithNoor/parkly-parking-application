@@ -3,12 +3,12 @@ import { Redirect } from 'react-router-dom';
 
 function RedirectPage() {
   const [userLogged] = useState(true);
-  const [userRole, setUserRole] = useState('user');
+  const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
     const checkUserDetails = async () => {
       if (userLogged === true) {
-        setUserRole('root');
+        setUserRole('user');
       }
     };
 

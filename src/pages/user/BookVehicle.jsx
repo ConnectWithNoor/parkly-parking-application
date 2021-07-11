@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Alert, Divider, Row, Button } from 'antd';
 import moment from 'moment';
 
-import AppLayout from '../Layout/AppLayout';
+import AppLayout from '../../Layout/AppLayout';
 
-import BookVehicleDuration from '../views/BookVehicleDuration/BookVehicleDuration';
-import BookVehicleSpot from '../views/BookVehicleSpot/BookVehicleSpot';
+import BookVehicleDuration from '../../views/BookVehicleDuration/BookVehicleDuration';
+import BookVehicleSpot from '../../views/BookVehicleSpot/BookVehicleSpot';
 
 function BookVehicle() {
   const [error, setError] = useState(null);
