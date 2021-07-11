@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
-import { Row, Col, Form, Alert, Button } from 'antd';
+import { Row, Col, Form, Button, Spin } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import Footer from '../components/Footer/Footer';
 import FormInputField from '../components/FormInputField/FormInputField';
 
+import { registerUser } from '../firebase/firebaseAuth';
 import LoginIllustration from '../assets/images/auth-illustration.jpg';
+import {
+  errorNotification,
+  successNotification,
+} from '../utils/notificationToasts';
 
 function Register() {
   const [user, setUser] = useState({});
-  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const history = useHistory();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,7 +28,43 @@ function Register() {
   };
 
   const handleSubmit = async () => {
-    console.log('123');
+    try {
+      setLoading(true);
+      if (user.password !== user.confirmPassword)
+        return errorNotification({
+          title: 'Error occured',
+          description: 'Password Must Match',
+        });
+
+      const { errorMessage, success } = await registerUser(user);
+
+      if (errorMessage)
+        return errorNotification({
+          title: 'Error occured',
+          description: errorMessage,
+        });
+
+      if (success) {
+        successNotification({
+          title: 'Success',
+          description:
+            'User successfully Registered. Redirecting to Login Page',
+        });
+
+        setTimeout(() => {
+          history.push('/login');
+        }, 3000);
+        return;
+      }
+    } catch (error) {
+      console.error(error);
+      return errorNotification({
+        title: error?.errorCode,
+        description: error?.errorMessage,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -35,67 +77,59 @@ function Register() {
                 Register
               </h1>
             </div>
-            <Form size='large' onFinish={handleSubmit}>
-              {/* Name */}
-              <FormInputField
-                IconComponent={UserOutlined}
-                itemName='name'
-                placeholder='Name'
-                type='text'
-                targetName='name'
-                targetValue={user.name}
-                handleChange={handleChange}
-              />
-              {/* email */}
-              <FormInputField
-                IconComponent={MailOutlined}
-                itemName='email'
-                placeholder='Email'
-                type='email'
-                targetName='email'
-                targetValue={user.email}
-                handleChange={handleChange}
-              />
-
-              {/* password */}
-              <FormInputField
-                IconComponent={LockOutlined}
-                itemName='password'
-                placeholder='Password'
-                type='password'
-                targetName='password'
-                targetValue={user.password}
-                handleChange={handleChange}
-              />
-
-              {/* confirmed password */}
-              <FormInputField
-                IconComponent={LockOutlined}
-                itemName='confirmPassword'
-                placeholder='Retype Password'
-                type='password'
-                targetName='confirmPassword'
-                targetValue={user.confirmPassword}
-                handleChange={handleChange}
-              />
-
-              {error && (
-                <Alert
-                  message={error}
-                  type='error'
-                  showIcon
-                  closable
-                  onClose={() => setError(null)}
+            <Spin spinning={loading}>
+              <Form size='large' onFinish={handleSubmit}>
+                {/* Name */}
+                <FormInputField
+                  IconComponent={UserOutlined}
+                  itemName='name'
+                  placeholder='Name'
+                  type='text'
+                  targetName='name'
+                  targetValue={user.name}
+                  handleChange={handleChange}
                 />
-              )}
-              <Button
-                type='primary'
-                htmlType='submit'
-                className='mt-4rem w-100 bg-dark'
-                style={{ height: '3rem' }}>
-                Register
-              </Button>
-            </Form>
+                {/* email */}
+                <FormInputField
+                  IconComponent={MailOutlined}
+                  itemName='email'
+                  placeholder='Email'
+                  type='email'
+                  targetName='email'
+                  targetValue={user.email}
+                  handleChange={handleChange}
+                />
+
+                {/* password */}
+                <FormInputField
+                  IconComponent={LockOutlined}
+                  itemName='password'
+                  placeholder='Password'
+                  type='password'
+                  targetName='password'
+                  targetValue={user.password}
+                  handleChange={handleChange}
+                />
+
+                {/* confirmed password */}
+                <FormInputField
+                  IconComponent={LockOutlined}
+                  itemName='confirmPassword'
+                  placeholder='Retype Password'
+                  type='password'
+                  targetName='confirmPassword'
+                  targetValue={user.confirmPassword}
+                  handleChange={handleChange}
+                />
+                <Button
+                  type='primary'
+                  htmlType='submit'
+                  className='mt-4rem w-100 bg-dark'
+                  style={{ height: '3rem' }}>
+                  Register
+                </Button>
+              </Form>
+            </Spin>
             <div className='mt-1rem'>
               Already have an account?
               <Link to='/login'> Click Here To Login</Link>

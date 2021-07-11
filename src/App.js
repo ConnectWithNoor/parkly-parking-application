@@ -51,7 +51,7 @@ function App() {
           <AuthRoute path='/view-booking' component={ViewBooking} />
 
           {/* user routes */}
-          {userDetails.role === 'user' && (
+          {userDetails?.role === 'user' && (
             <>
               <AuthRoute path='/parking-section' component={ParkingSection} />
               <AuthRoute path='/book-vehicle' component={BookVehicle} />
@@ -59,7 +59,7 @@ function App() {
           )}
 
           {/* admin routes */}
-          {userDetails.role === 'root' && (
+          {userDetails?.role === 'root' && (
             <AuthRoute path='/view-students' component={viewStudents} />
           )}
 

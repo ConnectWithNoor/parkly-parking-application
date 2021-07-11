@@ -10,7 +10,7 @@ Made with love using ReactJS ❤
 
 - ReactJS
 - Firebase Hosting
-- Firebase Cloud DB
+- Firebase Firestore DB
 
 ## Libraries Used
 
@@ -18,6 +18,7 @@ Made with love using ReactJS ❤
 - React-Router-Dom
 - @ant-design/icons
 - Moment
+- dotenv
 
 ## Features
 

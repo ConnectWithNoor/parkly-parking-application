@@ -55,6 +55,14 @@ body {
   color: var(--blue-3);
 }
 
+.c-red {
+  color: var(--red);
+}
+
+.c-green {
+  color: var(--green);
+}
+
 .c-gray-4 {
   color: var(--gray4);
 }
