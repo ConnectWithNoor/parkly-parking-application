@@ -10,10 +10,7 @@ import FormInputField from '../components/FormInputField/FormInputField';
 
 import { AppContext } from '../context/AppContext';
 
-import {
-  errorNotification,
-  successNotification,
-} from '../utils/notificationToasts';
+import { errorNotification } from '../utils/notificationToasts';
 
 import LoginIllustration from '../assets/images/auth-illustration.jpg';
 
@@ -44,11 +41,6 @@ function Login() {
         });
 
       if (success) {
-        successNotification({
-          title: 'Success',
-          description: 'User successfully Logged. Redirecting to Dashboard',
-        });
-
         setTimeout(() => {
           // store user data in global context.
           // redirect will happen automatically

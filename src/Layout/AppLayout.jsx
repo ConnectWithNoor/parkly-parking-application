@@ -4,8 +4,12 @@ import { Link, useLocation, useHistory, Redirect } from 'react-router-dom';
 import { MenuFoldOutlined } from '@ant-design/icons';
 
 import { AppContext } from '../context/AppContext';
+
 import { adminRoutes, userRoutes } from '../routes/sidebarRoutes';
 import Footer from '../components/Footer/Footer';
+import { successNotification } from '../utils/notificationToasts';
+
+import { auth } from '../firebase/firebase';
 
 import './AppLayout.css';
 
@@ -17,7 +21,7 @@ const AppLayout = ({ children }) => {
   const [isAuthenticated] = useState(true);
   const [loading] = useState(false);
 
-  const { userDetails } = useContext(AppContext);
+  const { userDetails, setUserDetails } = useContext(AppContext);
 
   let history = useHistory();
 
@@ -31,7 +35,22 @@ const AppLayout = ({ children }) => {
     return <Redirect to='/signin' />;
   }
 
-  const handleLogout = () => {};
+  const handleLogout = async () => {
+    try {
+      await auth.signOut();
+
+      successNotification({
+        title: 'Success',
+        description: 'Successfully logged out. Redirecting to login page',
+      });
+
+      setTimeout(() => {
+        setUserDetails(null);
+      }, 2000);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Layout className='h-100v overflow-x-none'>
