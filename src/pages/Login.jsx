@@ -45,7 +45,7 @@ function Login() {
           // store user data in global context.
           // redirect will happen automatically
           setUserDetails(userInfo);
-        }, 3000);
+        }, 600);
         return;
       }
     } catch (error) {

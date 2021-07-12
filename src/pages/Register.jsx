@@ -55,7 +55,7 @@ function Register() {
 
         setTimeout(() => {
           history.push('/login');
-        }, 3000);
+        }, 600);
         return;
       }
     } catch (error) {

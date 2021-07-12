@@ -9,7 +9,7 @@ function errorNotification({
     message: title,
     description: description,
     icon: <CloseOutlined className='c-red' />,
-    duration: 2,
+    duration: 0.5,
   });
 }
 
@@ -18,7 +18,7 @@ function successNotification({ title, description }) {
     message: title,
     description: description,
     icon: <CheckOutlined className='c-green' />,
-    duration: 2,
+    duration: 0.5,
   });
 }
 

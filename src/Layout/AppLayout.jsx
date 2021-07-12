@@ -46,7 +46,7 @@ const AppLayout = ({ children }) => {
 
       setTimeout(() => {
         setUserDetails(null);
-      }, 2000);
+      }, 600);
     } catch (error) {
       console.error(error);
     }
