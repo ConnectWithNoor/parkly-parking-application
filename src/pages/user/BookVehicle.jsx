@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Alert, Divider, Row, Button } from 'antd';
+import React, { useState, useContext } from 'react';
+import { Divider, Row, Button } from 'antd';
 import moment from 'moment';
 
 import AppLayout from '../../Layout/AppLayout';
@@ -7,27 +7,41 @@ import AppLayout from '../../Layout/AppLayout';
 import BookVehicleDuration from '../../views/BookVehicleDuration/BookVehicleDuration';
 import BookVehicleSpot from '../../views/BookVehicleSpot/BookVehicleSpot';
 
+import { errorNotification } from '../../utils/notificationToasts';
+
+import { AppContext } from '../../context/AppContext';
+
 function BookVehicle() {
-  const [error, setError] = useState(null);
   const [bookingDate, setBookingDate] = useState('');
   const [bookingTime, setBookingTime] = useState(false);
   const [noOfHour, setNoOfHour] = useState(null);
   const [selectedSpot, setSelectedSpot] = useState(null);
+
+  const { setParkingDetails, parkingDetails } = useContext(AppContext);
 
   const onDatePickerChange = (date) => {
     setBookingDate(date);
   };
 
   const onSelectHoursChange = (hour) => {
-    if (!bookingTime) return setError('Please select time First');
+    if (!bookingTime)
+      return errorNotification({
+        title: 'Oops!',
+        description: 'Please select time first',
+      });
 
-    if (moment(bookingTime).add(hour, 'h').format('HH') >= 18)
-      return setError('Time should not exceed 18:00 Hr');
-
-    setNoOfHour(hour);
+    const reservingHours = moment(bookingTime).add(hour, 'h').format('HH');
+    if (reservingHours >= 8 && reservingHours <= 18) setNoOfHour(hour);
+    else
+      return errorNotification({
+        title: 'Oops!',
+        description: 'Time should not Within Working hours of 8 AM to 6 PM',
+        duration: 2,
+      });
   };
 
   const handleTimeChange = (time) => {
+    setNoOfHour(null);
     setBookingTime(time);
   };
 
@@ -38,16 +52,10 @@ function BookVehicle() {
   return (
     <AppLayout>
       <div className='w-75 m-auto'>
-        {error && (
-          <Alert
-            message={error}
-            type='error'
-            closable
-            onClose={() => setError(null)}
-          />
-        )}
         <div className='bg-gray-3 t-center radius-1'>
-          <p className='pt-1rem f-bold'>You have Selected Parking Section 2</p>
+          <p className='pt-1rem f-bold'>
+            You have Selected Parking Section: {parkingDetails.sectionId}
+          </p>
           <div className='p-1rem'>
             <BookVehicleDuration
               bookingDate={bookingDate}
