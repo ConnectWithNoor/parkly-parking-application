@@ -47,7 +47,6 @@ function BookVehicle() {
       });
 
     const reservingHours = moment(bookingTime).add(hour, 'h').format('HH');
-    console.log(reservingHours);
     if (reservingHours >= 8 && reservingHours <= 18) setNoOfHour(hour);
     else
       return errorNotification({
