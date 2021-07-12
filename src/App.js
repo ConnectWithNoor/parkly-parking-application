@@ -1,10 +1,12 @@
-import { lazy, useContext } from 'react';
+import { lazy, useContext, useEffect } from 'react';
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 
 import { AppContext } from './context/AppContext';
 import AuthRoute from './routes/AuthRoute';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import SuspenseLoader from './components/Suspense/SuspenseLoader';
+
+import { auth } from './firebase/firebase';
 
 import 'antd/dist/antd.css';
 import './styles/style.css';
@@ -26,6 +28,22 @@ const viewStudents = lazy(() => import('./pages/admin/viewStudents'));
 
 function App() {
   const { userDetails } = useContext(AppContext);
+
+  useEffect(() => {
+    const authSubscribe = () => {
+      return auth.onAuthStateChanged((user) => {
+        if (user) {
+          console.log({ success: true, user });
+        } else {
+          console.log({ success: false });
+        }
+      });
+    };
+    const unsubscribe = authSubscribe();
+
+    return () => unsubscribe();
+  }, []);
+
   return (
     <Router>
       <Switch>

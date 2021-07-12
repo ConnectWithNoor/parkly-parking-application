@@ -2,7 +2,7 @@ import { notification } from 'antd';
 import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
 
 function errorNotification({
-  title = 'Error Occured',
+  title = 'An Error Occured',
   description = 'Something Went Wrong',
 }) {
   notification.error({

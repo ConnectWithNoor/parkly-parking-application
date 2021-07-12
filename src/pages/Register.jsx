@@ -3,11 +3,13 @@ import { Row, Col, Form, Button, Spin } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 
+import { registerUser } from '../firebase/firebaseAuth';
+
 import Footer from '../components/Footer/Footer';
 import FormInputField from '../components/FormInputField/FormInputField';
 
-import { registerUser } from '../firebase/firebaseAuth';
 import LoginIllustration from '../assets/images/auth-illustration.jpg';
+
 import {
   errorNotification,
   successNotification,

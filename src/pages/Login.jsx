@@ -1,16 +1,27 @@
-import React, { useState } from 'react';
-import { Row, Col, Form, Alert, Button } from 'antd';
+import React, { useState, useContext } from 'react';
+import { Row, Col, Form, Button, Spin } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
+import { loginUser } from '../firebase/firebaseAuth';
+
 import Footer from '../components/Footer/Footer';
 import FormInputField from '../components/FormInputField/FormInputField';
+
+import { AppContext } from '../context/AppContext';
+
+import {
+  errorNotification,
+  successNotification,
+} from '../utils/notificationToasts';
 
 import LoginIllustration from '../assets/images/auth-illustration.jpg';
 
 function Login() {
   const [user, setUser] = useState({});
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const { setUserDetails } = useContext(AppContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,7 +33,33 @@ function Login() {
   };
 
   const handleSubmit = async () => {
-    console.log('123');
+    try {
+      setLoading(true);
+
+      const { errorMessage, success, userInfo } = await loginUser(user);
+      if (errorMessage)
+        return errorNotification({
+          title: 'Error occured',
+          description: errorMessage,
+        });
+
+      if (success) {
+        successNotification({
+          title: 'Success',
+          description: 'User successfully Logged. Redirecting to Dashboard',
+        });
+
+        setTimeout(() => {
+          // store user data in global context.
+          // redirect will happen automatically
+          setUserDetails(userInfo);
+        }, 3000);
+        return;
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -46,47 +83,39 @@ function Login() {
                 Login
               </h1>
             </div>
-            <Form size='large' onFinish={handleSubmit}>
-              {/* username */}
-              <FormInputField
-                itemName='username'
-                IconComponent={MailOutlined}
-                placeholder='Email'
-                type='email'
-                targetName='email'
-                targetValue={user.username}
-                handleChange={handleChange}
-              />
-
-              {/* password */}
-
-              <FormInputField
-                itemName='password'
-                IconComponent={LockOutlined}
-                placeholder='Password'
-                type='Password'
-                targetName='password'
-                targetValue={user.password}
-                handleChange={handleChange}
-              />
-
-              {error && (
-                <Alert
-                  message={error}
-                  type='error'
-                  showIcon
-                  closable
-                  onClose={() => setError(null)}
+            <Spin spinning={loading}>
+              <Form size='large' onFinish={handleSubmit}>
+                {/* username */}
+                <FormInputField
+                  itemName='username'
+                  IconComponent={MailOutlined}
+                  placeholder='Email'
+                  type='email'
+                  targetName='email'
+                  targetValue={user.username}
+                  handleChange={handleChange}
                 />
-              )}
-              <Button
-                type='primary'
-                htmlType='submit'
-                className='mt-4rem w-100 bg-dark'
-                style={{ height: '3rem' }}>
-                Sign In
-              </Button>
-            </Form>
+
+                {/* password */}
+
+                <FormInputField
+                  itemName='password'
+                  IconComponent={LockOutlined}
+                  placeholder='Password'
+                  type='Password'
+                  targetName='password'
+                  targetValue={user.password}
+                  handleChange={handleChange}
+                />
+                <Button
+                  type='primary'
+                  htmlType='submit'
+                  className='mt-4rem w-100 bg-dark'
+                  style={{ height: '3rem' }}>
+                  Sign In
+                </Button>
+              </Form>
+            </Spin>
             <div className='mt-1rem'>
               Don't have an account?
               <Link to='/register'> Click Here To Register</Link>
