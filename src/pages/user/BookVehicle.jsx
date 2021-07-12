@@ -12,25 +12,42 @@ import { errorNotification } from '../../utils/notificationToasts';
 import { AppContext } from '../../context/AppContext';
 
 function BookVehicle() {
-  const [bookingDate, setBookingDate] = useState('');
-  const [bookingTime, setBookingTime] = useState(false);
+  const [bookingDate, setBookingDate] = useState(null);
+  const [bookingTime, setBookingTime] = useState(null);
   const [noOfHour, setNoOfHour] = useState(null);
   const [selectedSpot, setSelectedSpot] = useState(null);
 
   const { setParkingDetails, parkingDetails } = useContext(AppContext);
 
-  const onDatePickerChange = (date) => {
+  const handleDateChange = (date) => {
+    setBookingTime(null);
+    setNoOfHour(null);
+
     setBookingDate(date);
   };
 
-  const onSelectHoursChange = (hour) => {
+  const handleTimeChange = (time) => {
+    if (!bookingDate)
+      return errorNotification({
+        title: 'Oops!',
+        description: 'Please select date first',
+        duration: 2,
+      });
+
+    setNoOfHour(null);
+    setBookingTime(time);
+  };
+
+  const handleHourChange = (hour) => {
     if (!bookingTime)
       return errorNotification({
         title: 'Oops!',
         description: 'Please select time first',
+        duration: 2,
       });
 
     const reservingHours = moment(bookingTime).add(hour, 'h').format('HH');
+    console.log(reservingHours);
     if (reservingHours >= 8 && reservingHours <= 18) setNoOfHour(hour);
     else
       return errorNotification({
@@ -38,11 +55,6 @@ function BookVehicle() {
         description: 'Time should not Within Working hours of 8 AM to 6 PM',
         duration: 2,
       });
-  };
-
-  const handleTimeChange = (time) => {
-    setNoOfHour(null);
-    setBookingTime(time);
   };
 
   const handleNextStep = () => {
@@ -62,8 +74,8 @@ function BookVehicle() {
               bookingTime={bookingTime}
               handleTimeChange={handleTimeChange}
               noOfHour={noOfHour}
-              onDatePickerChange={onDatePickerChange}
-              onSelectHoursChange={onSelectHoursChange}
+              handleDateChange={handleDateChange}
+              handleHourChange={handleHourChange}
             />
           </div>
         </div>
@@ -82,7 +94,7 @@ function BookVehicle() {
           type='primary'
           size='large'
           block
-          disabled={!selectedSpot}
+          disabled={!bookingDate || !bookingTime || !noOfHour || !selectedSpot}
           className='bg-dark'
           onClick={handleNextStep}>
           Next

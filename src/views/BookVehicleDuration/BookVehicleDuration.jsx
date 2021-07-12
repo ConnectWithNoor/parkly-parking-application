@@ -4,11 +4,11 @@ import { DatePicker, Row, Col, Space, TimePicker, Select } from 'antd';
 const { Option } = Select;
 
 function BookVehicleDuration({
-  onDatePickerChange,
+  handleDateChange,
   bookingDate,
   handleTimeChange,
   bookingTime,
-  onSelectHoursChange,
+  handleHourChange,
   noOfHour,
 }) {
   const disabledDate = (current) => {
@@ -19,6 +19,10 @@ function BookVehicleDuration({
     return [0, 1, 2, 3, 4, 5, 6, 7, 19, 20, 21, 22, 23];
   };
 
+  const disabledMins = () => {
+    return [...Array.from({ length: 59 }).map((_, ind) => ind + 1)];
+  };
+
   return (
     <div>
       <Row>
@@ -27,7 +31,7 @@ function BookVehicleDuration({
             <Space direction='vertical'>
               <span className='f-light'>Select Date</span>
               <DatePicker
-                onChange={onDatePickerChange}
+                onChange={handleDateChange}
                 picker='date'
                 disabledDate={disabledDate}
                 value={bookingDate}
@@ -43,6 +47,7 @@ function BookVehicleDuration({
                 use12Hours
                 format={'h:mm a'}
                 disabledHours={disabledHours}
+                disabledMinutes={disabledMins}
                 onChange={handleTimeChange}
                 value={bookingTime}
               />
@@ -56,7 +61,7 @@ function BookVehicleDuration({
               <Select
                 style={{ width: 200 }}
                 placeholder='Select Hours'
-                onChange={onSelectHoursChange}
+                onChange={handleHourChange}
                 value={noOfHour}>
                 <Option value={null}> --Select-- </Option>
                 <Option value='1'>1 Hr</Option>
