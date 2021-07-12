@@ -22,7 +22,7 @@ const registerUser = async (user) => {
     return { success: true };
   } catch (error) {
     console.error(error);
-    return { errorCode: error.code, errorMessage: error.message };
+    return { success: false, errorMessage: error.message };
   }
 };
 
@@ -58,7 +58,7 @@ const loginUser = async (user) => {
     return { success: true, userInfo };
   } catch (error) {
     console.error(error);
-    return { errorCode: error.code, errorMessage: error.message };
+    return { success: false, errorMessage: error.message };
   }
 };
 
