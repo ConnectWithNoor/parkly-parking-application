@@ -18,7 +18,7 @@ const BookVehicleSpot = memo(function ({
 
   useEffect(() => {
     const checkSpotAvail = () => {
-      if (reservedSpots?.spot_id === String(spotId)) {
+      if (reservedSpots?.spot_id === spotId) {
         setIsSpotAvail(false);
         setTooltipTitle(
           `Already reserved from ${moment(

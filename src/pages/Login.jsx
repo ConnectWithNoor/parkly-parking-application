@@ -50,6 +50,7 @@ function Login() {
         return;
       }
     } catch (error) {
+      console.error(error);
     } finally {
       setLoading(false);
     }

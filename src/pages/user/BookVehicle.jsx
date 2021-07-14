@@ -7,11 +7,17 @@ import AppLayout from '../../Layout/AppLayout';
 import BookVehicleDuration from '../../views/BookVehicleDuration/BookVehicleDuration';
 import BookVehicleSpot from '../../views/BookVehicleSpot/BookVehicleSpot';
 
-import { errorNotification } from '../../utils/functions/notificationToasts';
+import {
+  errorNotification,
+  successNotification,
+} from '../../utils/functions/notificationToasts';
 
 import { AppContext } from '../../context/AppContext';
 
-import { searchReservedSpots } from '../../firebase/firebaseDb';
+import {
+  searchReservedSpots,
+  reserveParkingSpot,
+} from '../../firebase/firebaseDb';
 import { MOMENT_FORMAT } from '../../utils/constants';
 
 function BookVehicle() {
@@ -23,7 +29,7 @@ function BookVehicle() {
   const [loading, setLoading] = useState(false);
   const [reservedSpots, setReservedSpots] = useState(null);
 
-  const { parkingDetails } = useContext(AppContext);
+  const { parkingDetails, userDetails } = useContext(AppContext);
 
   const handleDateChange = (date) => {
     setBookingTime(null);
@@ -105,13 +111,52 @@ function BookVehicle() {
         setShowSpots(true);
       }
     } catch (error) {
+      console.error(error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleNextStep = () => {
-    console.log(123);
+  const handleNextStep = async () => {
+    try {
+      setLoading(true);
+
+      const { success, errorMessage } = await reserveParkingSpot({
+        sectionId: parkingDetails.sectionId,
+        date: moment(bookingDate).format(MOMENT_FORMAT.DATE),
+        startTime: bookingTime,
+        spotId: selectedSpot,
+        userId: userDetails.id,
+        bookingTime,
+        noOfHour,
+      });
+
+      if (errorMessage) {
+        return errorNotification({
+          title: 'An Error Occured',
+          description: errorMessage,
+          duration: 2,
+        });
+      }
+
+      if (success) {
+        successNotification({
+          title: 'Reservation Successful',
+          description: 'You have successfully reserved your parking spot.',
+          duration: 2,
+        });
+        setBookingDate(null);
+        setBookingTime(null);
+        setNoOfHour(null);
+        setSelectedSpot(null);
+        setShowSpots(null);
+        return;
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -146,7 +191,7 @@ function BookVehicle() {
                   spotId={index + 1}
                   selectedSpot={selectedSpot}
                   reservedSpots={reservedSpots.find(
-                    (el) => el.spot_id === String(index + 1)
+                    (el) => el.spot_id === index + 1
                   )}
                 />
               ))}
