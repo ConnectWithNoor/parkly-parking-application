@@ -3,13 +3,13 @@ import { Button, Space } from 'antd';
 const columns = [
   {
     title: 'Parking Section',
-    dataIndex: 'parking_section',
-    key: 'parking_section',
+    dataIndex: 'sectionId',
+    key: 'sectionId',
   },
   {
     title: 'Parking Slot',
-    dataIndex: 'parking_slot',
-    key: 'parking_slot',
+    dataIndex: 'spot_id',
+    key: 'spot_id',
   },
   {
     title: 'Date',
@@ -28,8 +28,8 @@ const columns = [
   },
   {
     title: 'Total Hours',
-    dataIndex: 'total_hours',
-    key: 'total_hours',
+    dataIndex: 'no_of_hour',
+    key: 'no_of_hour',
   },
   {
     title: 'Cancel Booking',

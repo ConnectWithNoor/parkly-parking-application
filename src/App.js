@@ -48,20 +48,23 @@ function App() {
             </SuspenseLoader>
           </Route>
 
-          <AuthRoute path='/feedback' component={Feedback} />
-          <AuthRoute path='/view-booking' component={ViewBooking} />
-
           {/* user routes */}
           {userDetails?.role === 'user' && (
             <>
               <AuthRoute path='/parking-section' component={ParkingSection} />
               <AuthRoute path='/book-vehicle' component={BookVehicle} />
+              <AuthRoute path='/feedback' component={Feedback} />
+              <AuthRoute path='/view-booking' component={ViewBooking} />
             </>
           )}
 
           {/* admin routes */}
           {userDetails?.role === 'root' && (
-            <AuthRoute path='/view-students' component={viewStudents} />
+            <>
+              <AuthRoute path='/view-students' component={viewStudents} />
+              <AuthRoute path='/feedback' component={Feedback} />
+              <AuthRoute path='/view-booking' component={ViewBooking} />
+            </>
           )}
 
           {/* for all other routes */}

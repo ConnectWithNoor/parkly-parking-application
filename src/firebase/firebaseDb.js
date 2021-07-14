@@ -101,7 +101,6 @@ const reserveParkingSpot = async ({
         end_time: addHoursAndFormatHours(startTime, noOfHour),
         no_of_hour: noOfHour,
         spot_id: spotId,
-
         user_id: db.doc(`${FIREBASE_COLLECTION.USERS}/${userId}`),
       });
 
@@ -112,4 +111,60 @@ const reserveParkingSpot = async ({
   }
 };
 
-export { getUserDataByUid, searchReservedSpots, reserveParkingSpot };
+const getUserBookingDetails = async ({ userId }) => {
+  try {
+    const results = [];
+    const userRef = db.doc(`${FIREBASE_COLLECTION.USERS}/${userId}`);
+    const { docs: reservedSpotsSection_1 } = await db
+      .doc(`/${FIREBASE_COLLECTION.PARKING_SPOTS}/section_1/`)
+      .collection(`${FIREBASE_COLLECTION.RESERVATIONS}`)
+      .where('user_id', '==', userRef)
+      .get();
+
+    const { docs: reservedSpotsSection_2 } = await db
+      .doc(`/${FIREBASE_COLLECTION.PARKING_SPOTS}/section_2/`)
+      .collection(`${FIREBASE_COLLECTION.RESERVATIONS}`)
+      .where('user_id', '==', userRef)
+      .get();
+
+    const { docs: reservedSpotsSection_3 } = await db
+      .doc(`/${FIREBASE_COLLECTION.PARKING_SPOTS}/section_3/`)
+      .collection(`${FIREBASE_COLLECTION.RESERVATIONS}`)
+      .where('user_id', '==', userRef)
+      .get();
+
+    reservedSpotsSection_1.forEach((item, index) =>
+      results.push({
+        ...item.data(),
+        sectionId: 1,
+        key: `${index * 3}`,
+      })
+    );
+    reservedSpotsSection_2.forEach((item, index) =>
+      results.push({
+        ...item.data(),
+        sectionId: 2,
+        key: `${index * 7}`,
+      })
+    );
+    reservedSpotsSection_3.forEach((item, index) =>
+      results.push({
+        ...item.data(),
+        sectionId: 3,
+        key: `${index * 19}`,
+      })
+    );
+
+    return { success: true, results };
+  } catch (error) {
+    console.error(error);
+    return { success: false, errorMessage: error.message };
+  }
+};
+
+export {
+  getUserDataByUid,
+  searchReservedSpots,
+  reserveParkingSpot,
+  getUserBookingDetails,
+};
