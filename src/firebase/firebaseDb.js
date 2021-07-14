@@ -56,7 +56,22 @@ const searchReservedSpots = async ({
         spotEndTime
       );
 
-      if (isStartTimeOverlap || isEndTimeOverlap) {
+      const isSpotStartTimeOverlap = moment(SpotStartTime).isBetween(
+        bookingTime,
+        bookingEndtime
+      );
+
+      const isSpotEndTimeOverlap = moment(spotEndTime).isBetween(
+        bookingTime,
+        bookingEndtime
+      );
+
+      if (
+        isStartTimeOverlap ||
+        isEndTimeOverlap ||
+        isSpotStartTimeOverlap ||
+        isSpotEndTimeOverlap
+      ) {
         reservedSpotsData.unshift(data);
       }
     });

@@ -23,7 +23,7 @@ function BookVehicle() {
   const [loading, setLoading] = useState(false);
   const [reservedSpots, setReservedSpots] = useState(null);
 
-  const { setParkingDetails, parkingDetails } = useContext(AppContext);
+  const { parkingDetails } = useContext(AppContext);
 
   const handleDateChange = (date) => {
     setBookingTime(null);
@@ -146,7 +146,7 @@ function BookVehicle() {
                   spotId={index + 1}
                   selectedSpot={selectedSpot}
                   reservedSpots={reservedSpots.find(
-                    (el) => el.spot_id == index + 1
+                    (el) => el.spot_id === String(index + 1)
                   )}
                 />
               ))}

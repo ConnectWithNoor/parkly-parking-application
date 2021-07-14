@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { Col, Image, Divider, Button, Spin, Tooltip } from 'antd';
 import moment from 'moment';
 
@@ -7,7 +7,7 @@ import spotUnvail from '../../assets/images/spot-unavailable.png';
 
 import { MOMENT_FORMAT } from '../../utils/constants';
 
-function BookVehicleSpot({
+const BookVehicleSpot = memo(function ({
   selectedSpot,
   setSelectedSpot,
   spotId,
@@ -18,10 +18,10 @@ function BookVehicleSpot({
 
   useEffect(() => {
     const checkSpotAvail = () => {
-      if (reservedSpots?.spot_id == spotId) {
+      if (reservedSpots?.spot_id === String(spotId)) {
         setIsSpotAvail(false);
         setTooltipTitle(
-          `Booking hours overlapping from ${moment(
+          `Already reserved from ${moment(
             reservedSpots.start_time,
             `${MOMENT_FORMAT.HOURS}:${MOMENT_FORMAT.MINUTES}`
           ).format(`h:${MOMENT_FORMAT.MINUTES} a`)} to ${moment(
@@ -33,7 +33,7 @@ function BookVehicleSpot({
     };
 
     checkSpotAvail();
-  }, []);
+  });
 
   return (
     <>
@@ -72,6 +72,6 @@ function BookVehicleSpot({
       </Col>
     </>
   );
-}
+});
 
 export default BookVehicleSpot;
