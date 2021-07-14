@@ -3,7 +3,7 @@ import React, { useState, useEffect, createContext } from 'react';
 import { auth } from '../firebase/firebase';
 import { getUserDataByUid } from '../firebase/firebaseDb';
 
-import { successNotification } from '../utils/notificationToasts';
+import { successNotification } from '../utils/functions/notificationToasts';
 
 const AppContext = createContext();
 
@@ -20,12 +20,13 @@ function AppProvider({ children }) {
           if (success) {
             successNotification({
               title: 'Success',
-              description: 'User successfully Logged. Redirecting to dashboard',
+              description: 'Redirecting to dashboard',
+              duration: 1,
             });
 
             setTimeout(() => {
               setUserDetails(userInfo);
-            }, 600);
+            }, 1200);
           }
         }
       });

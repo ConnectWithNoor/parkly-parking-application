@@ -1,5 +1,5 @@
 import React from 'react';
-import { DatePicker, Row, Col, Space, TimePicker, Select } from 'antd';
+import { DatePicker, Row, Col, Space, TimePicker, Select, Button } from 'antd';
 
 const { Option } = Select;
 
@@ -10,6 +10,7 @@ function BookVehicleDuration({
   bookingTime,
   handleHourChange,
   noOfHour,
+  handleShowSpots,
 }) {
   const disabledDate = (current) => {
     return current && current.valueOf() < Date.now();
@@ -76,6 +77,17 @@ function BookVehicleDuration({
             </Space>
           </div>
         </Col>
+
+        <div className='w-100 t-center'>
+          <Button
+            type='primary'
+            size='large'
+            className='bg-dark mt-1rem'
+            onClick={handleShowSpots}
+            disabled={!bookingDate || !bookingTime || !noOfHour}>
+            Search
+          </Button>
+        </div>
       </Row>
     </div>
   );

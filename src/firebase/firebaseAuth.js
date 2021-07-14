@@ -18,7 +18,6 @@ const registerUser = async (user) => {
       .doc(`/${FIREBASE_COLLECTION.USERS}/${respAuth.user.uid}`)
       .set(newUser);
 
-    await auth.signOut();
     return { success: true };
   } catch (error) {
     console.error(error);

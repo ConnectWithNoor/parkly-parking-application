@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Row, Col, Form, Button, Spin } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { registerUser } from '../firebase/firebaseAuth';
 
@@ -10,15 +10,11 @@ import FormInputField from '../components/FormInputField/FormInputField';
 
 import LoginIllustration from '../assets/images/auth-illustration.jpg';
 
-import {
-  errorNotification,
-  successNotification,
-} from '../utils/notificationToasts';
+import { errorNotification } from '../utils/functions/notificationToasts';
 
 function Register() {
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(false);
-  const history = useHistory();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,6 +32,7 @@ function Register() {
         return errorNotification({
           title: 'Error occured',
           description: 'Password Must Match',
+          duration: 2,
         });
 
       const { errorMessage, success } = await registerUser(user);
@@ -44,20 +41,10 @@ function Register() {
         return errorNotification({
           title: 'Error occured',
           description: errorMessage,
+          duration: 2,
         });
 
-      if (success) {
-        successNotification({
-          title: 'Success',
-          description:
-            'User successfully Registered. Redirecting to Login Page',
-        });
-
-        setTimeout(() => {
-          history.push('/login');
-        }, 600);
-        return;
-      }
+      if (success) return;
     } catch (error) {
       console.error(error);
       return errorNotification({

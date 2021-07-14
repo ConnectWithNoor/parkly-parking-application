@@ -7,7 +7,7 @@ import { AppContext } from '../context/AppContext';
 
 import { adminRoutes, userRoutes } from '../routes/sidebarRoutes';
 import Footer from '../components/Footer/Footer';
-import { successNotification } from '../utils/notificationToasts';
+import { successNotification } from '../utils/functions/notificationToasts';
 
 import { auth } from '../firebase/firebase';
 

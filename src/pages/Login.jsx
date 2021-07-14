@@ -10,7 +10,7 @@ import FormInputField from '../components/FormInputField/FormInputField';
 
 import { AppContext } from '../context/AppContext';
 
-import { errorNotification } from '../utils/notificationToasts';
+import { errorNotification } from '../utils/functions/notificationToasts';
 
 import LoginIllustration from '../assets/images/auth-illustration.jpg';
 
@@ -38,6 +38,7 @@ function Login() {
         return errorNotification({
           title: 'Error occured',
           description: errorMessage,
+          duration: 2,
         });
 
       if (success) {
@@ -45,7 +46,7 @@ function Login() {
           // store user data in global context.
           // redirect will happen automatically
           setUserDetails(userInfo);
-        }, 600);
+        }, 1200);
         return;
       }
     } catch (error) {
