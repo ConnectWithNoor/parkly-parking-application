@@ -1,7 +1,14 @@
 import moment from 'moment';
 import { db } from './firebase';
 
-import { FIREBASE_COLLECTION, MOMENT_FORMAT } from '../utils/constants';
+import { FIREBASE_COLLECTION } from '../utils/constants';
+import {
+  addHours,
+  addHoursAndFormatHours,
+  formatDate,
+  formatTime,
+  formatTimeReturnStr,
+} from '../utils/functions/momentTimeAndDate';
 
 const getUserDataByUid = async (value) => {
   try {
@@ -35,16 +42,9 @@ const searchReservedSpots = async ({
 
     reservedSpots.forEach((spot) => {
       const data = spot.data();
-      const SpotStartTime = moment(
-        data.start_time,
-        `${MOMENT_FORMAT.HOURS}:${MOMENT_FORMAT.MINUTES}`
-      );
-      const spotEndTime = moment(
-        data.end_time,
-        `${MOMENT_FORMAT.HOURS}:${MOMENT_FORMAT.MINUTES}`
-      );
-
-      const bookingEndtime = moment(bookingTime).add(noOfHour, 'h');
+      const SpotStartTime = formatTime(data.start_time);
+      const spotEndTime = formatTime(data.end_time);
+      const bookingEndtime = addHours(bookingTime, noOfHour);
 
       const isStartTimeOverlap = moment(bookingTime).isBetween(
         SpotStartTime,
@@ -91,19 +91,14 @@ const reserveParkingSpot = async ({
   noOfHour,
   userId,
 }) => {
-  console.log(startTime);
   try {
-    const data = await db
+    await db
       .doc(`/${FIREBASE_COLLECTION.PARKING_SPOTS}/section_${sectionId}/`)
       .collection(`${FIREBASE_COLLECTION.RESERVATIONS}`)
       .add({
-        date: moment(date).format(`${MOMENT_FORMAT.DATE}`),
-        start_time: moment(startTime).format(
-          `${MOMENT_FORMAT.HOURS}:${MOMENT_FORMAT.MINUTES}`
-        ),
-        end_time: moment(startTime)
-          .add(noOfHour, 'h')
-          .format(`${MOMENT_FORMAT.HOURS}:${MOMENT_FORMAT.MINUTES}`),
+        date: formatDate(date),
+        start_time: formatTimeReturnStr(startTime),
+        end_time: addHoursAndFormatHours(startTime, noOfHour),
         no_of_hour: noOfHour,
         spot_id: spotId,
 

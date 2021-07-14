@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 import { Divider, Row, Button, Spin } from 'antd';
-import moment from 'moment';
 
 import AppLayout from '../../Layout/AppLayout';
 
@@ -11,6 +10,11 @@ import {
   errorNotification,
   successNotification,
 } from '../../utils/functions/notificationToasts';
+import {
+  addHoursAndFormatHours,
+  formatDate,
+  formatHours,
+} from '../../utils/functions/momentTimeAndDate';
 
 import { AppContext } from '../../context/AppContext';
 
@@ -18,7 +22,6 @@ import {
   searchReservedSpots,
   reserveParkingSpot,
 } from '../../firebase/firebaseDb';
-import { MOMENT_FORMAT } from '../../utils/constants';
 
 function BookVehicle() {
   const [bookingDate, setBookingDate] = useState(null);
@@ -47,7 +50,7 @@ function BookVehicle() {
         duration: 2,
       });
 
-    const reservedTime = moment(time).format(MOMENT_FORMAT.HOURS);
+    const reservedTime = formatHours(time);
 
     // from 8 AM to 5 PM
     if (reservedTime >= 8 && reservedTime <= 17) {
@@ -72,9 +75,8 @@ function BookVehicle() {
         duration: 2,
       });
 
-    const reservingHours = moment(bookingTime)
-      .add(hour, 'h')
-      .format(MOMENT_FORMAT.HOURS);
+    const reservingHours = addHoursAndFormatHours(bookingTime, hour);
+
     if (reservingHours >= 8 && reservingHours <= 18) {
       setNoOfHour(hour);
       setShowSpots(null);
@@ -93,7 +95,7 @@ function BookVehicle() {
       const { success, reservedSpotsData, errorMessage } =
         await searchReservedSpots({
           section_id: parkingDetails.sectionId,
-          date: moment(bookingDate).format(MOMENT_FORMAT.DATE),
+          date: formatDate(bookingDate),
           bookingTime,
           noOfHour,
         });
@@ -123,7 +125,7 @@ function BookVehicle() {
 
       const { success, errorMessage } = await reserveParkingSpot({
         sectionId: parkingDetails.sectionId,
-        date: moment(bookingDate).format(MOMENT_FORMAT.DATE),
+        date: formatDate(bookingDate),
         startTime: bookingTime,
         spotId: selectedSpot,
         userId: userDetails.id,
