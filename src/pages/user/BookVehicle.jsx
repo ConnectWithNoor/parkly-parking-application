@@ -157,8 +157,7 @@ function BookVehicle() {
         );
         successNotification({
           title: 'Reservation Successful',
-          description:
-            'Please check your email forYou have successfully reserved your parking spot.',
+          description: 'You have successfully reserved your parking spot.',
           duration: 2,
         });
 

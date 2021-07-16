@@ -15,6 +15,7 @@ function AppProvider({ children }) {
     const authSubscribe = () => {
       return auth.onAuthStateChanged(async (user) => {
         if (user) {
+          if (userDetails) return;
           const { success, userInfo } = await getUserDataByUid(user.uid);
 
           if (success) {

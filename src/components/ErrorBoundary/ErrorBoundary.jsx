@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Image, Row, Col } from 'antd';
-import { Link } from 'react-router-dom';
+import { Image, Row, Col, Button } from 'antd';
+import { withRouter } from 'react-router-dom';
 
 import Footer from '../Footer/Footer';
 import NotFound from '../../assets/images/not-found.png';
@@ -34,9 +34,12 @@ class ErrorBoundary extends Component {
               Don't Worry, It's a small bug. Dev can fix it in real quick. Let
               them know.
             </h1>
-            <Link to='/redirect' className='radius-1 p-1rem bg-dark c-white'>
+            <Button
+              type='primary'
+              className='bg-dark'
+              onClick={() => window.location.reload()}>
               Go to Homepage
-            </Link>
+            </Button>
           </div>
           <Row>
             <Col xs={24} sm={24} md={12} lg={12} xl={12}>
@@ -64,4 +67,4 @@ class ErrorBoundary extends Component {
   }
 }
 
-export default ErrorBoundary;
+export default withRouter(ErrorBoundary);
