@@ -48,14 +48,13 @@ Made with love using ReactJS ❤
 
 To get started, Follow the comments sequentially
 
-// Install the project dependencies.
+    // Install the project dependencies.
 
-npm install
+    npm install
 
-// After installation, get the environment from me.
+    // After installation, get the environment from me.
+    // Create a .env file on root of the project and paste all the environment variables
 
-// Create a .env file on root of the project and paste all the environment variables
+    // Then start the application by using the below command
 
-// Then start the application by using the below command.
-
-npm run start
+    npm run start
