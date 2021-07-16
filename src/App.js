@@ -22,7 +22,7 @@ const ParkingSection = lazy(() => import('./pages/user/ParkingSection'));
 const BookVehicle = lazy(() => import('./pages/user/BookVehicle'));
 
 // admin pages
-const viewStudents = lazy(() => import('./pages/admin/viewStudents'));
+const ViewStudents = lazy(() => import('./pages/admin/ViewStudents'));
 
 function App() {
   const { userDetails } = useContext(AppContext);
@@ -61,7 +61,7 @@ function App() {
           {/* admin routes */}
           {userDetails?.role === 'root' && (
             <>
-              <AuthRoute path='/view-students' component={viewStudents} />
+              <AuthRoute path='/view-students' component={ViewStudents} />
               <AuthRoute path='/feedback' component={Feedback} />
               <AuthRoute path='/view-booking' component={ViewBooking} />
             </>

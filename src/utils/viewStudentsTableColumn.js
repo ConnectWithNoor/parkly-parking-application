@@ -1,48 +1,70 @@
 import { Button, Space } from 'antd';
 
-const columns = [
+const columnData = ({ userId, updateUserStatus }) => [
   {
-    title: 'Id',
-    dataIndex: '_id',
-    key: '_id',
+    title: 'User Id',
+    dataIndex: 'id',
+    key: 'id',
+    align: 'center',
+    render: (text) => <div className='t-center'>{text}</div>,
   },
   {
     title: 'Name',
     dataIndex: 'name',
     key: 'name',
+    align: 'center',
+    render: (text) => <div className='t-center'>{text}</div>,
   },
   {
     title: 'Email',
     dataIndex: 'email',
     key: 'email',
+    align: 'center',
+    render: (text) => <div className='t-center'>{text}</div>,
   },
   {
-    title: 'Enable/Disable Account',
+    title: 'Role',
+    dataIndex: 'role',
+    key: 'role',
+    align: 'center',
+    render: (text) => <div className='t-center'>{text}</div>,
+  },
+  {
+    title: 'Status',
+    dataIndex: 'active',
+    key: 'active',
+    align: 'center',
+    render: (text) => <div className='t-center'>{text ? 'Yes' : 'No'}</div>,
+  },
+  {
+    title: '',
     dataIndex: 'disable_account',
     key: 'disable_account',
-    render: () => (
+    align: 'center',
+    render: (_, data) => (
       <Space size='middle'>
-        <Button type='primary' className='bg-dark'>
-          Enable Account
-        </Button>
+        {data.active ? (
+          <Button
+            type='primary'
+            className='bg-dark'
+            disabled={data.id === userId}
+            onClick={() =>
+              updateUserStatus({ userId: data.id, status: false })
+            }>
+            Disable Account
+          </Button>
+        ) : (
+          <Button
+            type='primary'
+            className='bg-dark'
+            disabled={data.id === userId}
+            onClick={() => updateUserStatus({ userId: data.id, status: true })}>
+            Enable Account
+          </Button>
+        )}
       </Space>
     ),
   },
 ];
 
-const dataSource = [
-  {
-    key: '1',
-    _id: 1,
-    name: 'Dishad',
-    email: 'dildilpakistan@gmail.com',
-  },
-  {
-    key: '2',
-    _id: 2,
-    name: 'Dishad',
-    email: 'dildilpakistan@gmail.com',
-  },
-];
-
-export { columns, dataSource };
+export { columnData };

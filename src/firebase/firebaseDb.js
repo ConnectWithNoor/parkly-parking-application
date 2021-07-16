@@ -27,6 +27,41 @@ const getUserDataByUid = async (value) => {
   }
 };
 
+const getAllUsersData = async () => {
+  try {
+    const results = [];
+    const { docs: users } = await db
+      .collection(`/${FIREBASE_COLLECTION.USERS}`)
+      .get();
+
+    users.forEach((user) =>
+      results.push({
+        ...user.data(),
+        id: user.id,
+      })
+    );
+
+    return { success: true, results };
+  } catch (error) {
+    console.error(error);
+    return { success: false, errorMessage: error.message };
+  }
+};
+
+const changeUserStatus = async (userId, status) => {
+  console.log(userId, status);
+  try {
+    await db
+      .doc(`${FIREBASE_COLLECTION.USERS}/${userId}`)
+      .update({ active: status });
+
+    return { success: true };
+  } catch (error) {
+    console.error(error);
+    return { success: false, errorMessage: error.message };
+  }
+};
+
 const searchReservedSpots = async ({
   section_id,
   date,
@@ -264,6 +299,8 @@ const getFeedbackAndCommentsByFeedbackId = async (feedbackId) => {
 
 export {
   getUserDataByUid,
+  changeUserStatus,
+  getAllUsersData,
   searchReservedSpots,
   reserveParkingSpot,
   getUserBookingDetails,

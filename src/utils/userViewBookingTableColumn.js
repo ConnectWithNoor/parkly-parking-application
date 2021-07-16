@@ -43,13 +43,13 @@ const columnData = (sectionId, setIsDeleted, setLoading) => [
     dataIndex: 'no_of_hour',
     key: 'no_of_hour',
     align: 'center',
-
     render: (text) => <div className='t-center'>{text} Hrs</div>,
   },
   {
     title: '',
     dataIndex: 'total_hours',
     key: 'total_hours',
+    align: 'center',
     render: (_, data) => {
       return (
         <Space size='middle'>
