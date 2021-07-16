@@ -127,7 +127,7 @@ function ViewBooking() {
             <Spin spinning={loading}>
               <Table
                 dataSource={tableData}
-                columns={columnData(sectionId, setIsDeleted, setLoading)}
+                columns={() => columnData(sectionId, setIsDeleted, setLoading)}
                 rowKey='uid'
                 pagination={{
                   pageSize: 5,

@@ -273,6 +273,10 @@ body {
   margin-bottom: 1rem;
 }
 
+.mb-2rem {
+  margin-bottom: 2rem;
+}
+
 .ml-1rem {
   margin-left: 1rem;
 }
