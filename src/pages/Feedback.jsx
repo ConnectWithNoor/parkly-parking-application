@@ -1,89 +1,208 @@
-import React, { useState } from 'react';
-import { Table, Input, Button, Modal } from 'antd';
+import React, { useState, useEffect, useContext } from 'react';
+import { Table, Input, Button, Modal, Spin } from 'antd';
 
-import { feedbackTableColumn, dataSource } from '../utils/FeedbackTableColumns';
+import { AppContext } from '../context/AppContext';
+
+import { feedbackTableColumn } from '../utils/FeedbackTableColumns';
+import {
+  errorNotification,
+  successNotification,
+} from '../utils/functions/notificationToasts';
+
 import AppLayout from '../Layout/AppLayout';
+
+import {
+  getAllFeedbackByUserId,
+  getFeedbackAndCommentsByFeedbackId,
+  addNewFeedback,
+} from '../firebase/firebaseDb';
 
 const { TextArea } = Input;
 
 function Feedback() {
   const [feedbackMessage, setFeedbackMessage] = useState(null);
-  const [showModel, setShowModel] = useState(false);
-  const [selectedRowMessage, setSelectedRowMessage] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(null);
+  const [isModalLoading, setIsModalLoading] = useState(null);
+  const [tableData, setTableData] = useState(null);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [adminReply, setAdminReply] = useState([]);
+
+  const { userDetails } = useContext(AppContext);
+
+  useEffect(() => {
+    const checkFeedback = async () => {
+      try {
+        setIsLoading(true);
+        const { success, results, errorMessage } = await getAllFeedbackByUserId(
+          userDetails.id
+        );
+        if (errorMessage) {
+          return errorNotification({
+            title: 'Error occured',
+            description: errorMessage,
+            duration: 2,
+          });
+        }
+
+        if (success) {
+          setTableData(results);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkFeedback();
+  }, [userDetails]);
+
+  useEffect(() => {
+    const getComments = async () => {
+      try {
+        setIsModalLoading(true);
+
+        const { success, results, errorMessage } =
+          await getFeedbackAndCommentsByFeedbackId(selectedRow.uid);
+        if (errorMessage) {
+          return errorNotification({
+            title: 'Error occured',
+            description: errorMessage,
+            duration: 2,
+          });
+        }
+        if (success) {
+          setAdminReply(results);
+        }
+      } catch (error) {
+      } finally {
+        setIsModalLoading(false);
+      }
+    };
+
+    getComments();
+  }, [selectedRow]);
 
   const handleChange = (e) => {
     setFeedbackMessage(e.target.value);
   };
 
   const handleModalOpen = (record) => {
-    setSelectedRowMessage(record);
-    setShowModel(true);
+    setSelectedRow(record);
+    setShowModal(true);
+  };
+
+  const handleModalClose = () => {
+    setSelectedRow(null);
+    setShowModal(false);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      setIsLoading(true);
+      const { success, results, errorMessage } = await addNewFeedback({
+        message: feedbackMessage,
+        userId: userDetails.id,
+        role: userDetails.role,
+      });
+
+      if (errorMessage) {
+        return errorNotification({
+          title: 'Error occured',
+          description: errorMessage,
+          duration: 2,
+        });
+      }
+      if (success) {
+        setTableData((prev) => [results, ...prev]);
+        setFeedbackMessage(null);
+        return successNotification({
+          title: 'Feedback Added successfully',
+          description: errorMessage,
+          duration: 2,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <AppLayout>
       <div className='w-75 m-auto'>
-        <div className='w-100 bg-white f-lato font-size-3 t-center radius-1 p-1rem mb-1rem'>
-          Your Feedbacks
-        </div>
-        <Table
-          dataSource={dataSource}
-          columns={feedbackTableColumn}
-          pagination={{
-            pageSize: 5,
-            current: 1,
-          }}
-          onRow={(record) => {
-            return {
-              onClick: () => handleModalOpen(record),
-            };
-          }}
-        />
-        <div className='mt-1rem'>
-          <TextArea
-            rows={4}
-            value={feedbackMessage}
-            onChange={handleChange}
-            placeholder='Feedback Message Here'
-          />
-        </div>
-        <div className='mt-1rem'>
-          <Button type='primary bg-dark' disabled={!feedbackMessage}>
-            Submit Feedback
-          </Button>
-        </div>
-
-        {/* modal */}
-        <Modal
-          title='Basic Modal'
-          visible={showModel}
-          onOk={() => setShowModel(false)}
-          onCancel={() => setShowModel(false)}>
-          <div className='p-halfrem'>
-            <div className='mt-1rem'>
-              <p>Your Feedback</p>
-              <TextArea
-                rows={4}
-                value={selectedRowMessage?.feedback_text}
-                onChange={handleChange}
-                placeholder='Feedback Message Here'
-                disabled
-              />
-            </div>
-
-            <div className='mt-1rem'>
-              <p>Admin's Reply</p>
-
-              <TextArea
-                rows={4}
-                value={selectedRowMessage?.feedback_text}
-                onChange={handleChange}
-                placeholder='Feedback Message Here'
-                disabled
-              />
-            </div>
+        <div className='bg-gray-3 t-center radius-1 p-1rem '>
+          <div className='w-100 bg-white font-size-2 t-center radius-1 p-1rem'>
+            <p className='pt-1rem f-bold '>Please select the parking section</p>
           </div>
-        </Modal>
+          <Spin spinning={isLoading}>
+            <Table
+              dataSource={tableData}
+              columns={feedbackTableColumn}
+              rowKey='uid'
+              pagination={{
+                pageSize: 5,
+              }}
+              onRow={(record) => {
+                return {
+                  onClick: () => handleModalOpen(record),
+                };
+              }}
+            />
+          </Spin>
+          <div className='mt-1rem'>
+            <TextArea
+              rows={4}
+              value={feedbackMessage}
+              onChange={handleChange}
+              placeholder='Feedback Message Here'
+            />
+          </div>
+          <div className='mt-1rem'>
+            <Button
+              type='primary bg-dark'
+              onClick={handleSubmit}
+              disabled={!feedbackMessage || isLoading}>
+              Submit Feedback
+            </Button>
+          </div>
+
+          {/* modal */}
+          <Modal
+            title='Basic Modal'
+            visible={showModal}
+            onOk={handleModalClose}
+            onCancel={handleModalClose}>
+            <Spin spinning={isModalLoading}>
+              <div className='p-halfrem'>
+                <div className='mt-1rem'>
+                  <p>Feedback</p>
+                  <TextArea
+                    rows={4}
+                    value={selectedRow?.message}
+                    placeholder='Feedback Message Here'
+                  />
+                </div>
+
+                <div className='mt-1rem'>
+                  <p>Admin's Reply</p>
+
+                  {adminReply.map((reply) => (
+                    <TextArea
+                      rows={4}
+                      value={reply?.message || feedbackMessage}
+                      onChange={userDetails.role === 'root' && handleChange}
+                      placeholder='Admin reply here'
+                      className='mt-1rem'
+                    />
+                  ))}
+                </div>
+              </div>
+            </Spin>
+          </Modal>
+        </div>
       </div>
     </AppLayout>
   );

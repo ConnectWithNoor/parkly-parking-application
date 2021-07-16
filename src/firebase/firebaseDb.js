@@ -164,10 +164,67 @@ const cancelParkingReservationById = async (
   }
 };
 
+const addNewFeedback = async ({ message, userId, role }) => {
+  try {
+    const uid = uuid();
+    const data = {
+      uid,
+      userId,
+      message,
+      role,
+      date: formatDate(new Date()),
+      time: formatTimeReturnStr(new Date()),
+    };
+
+    await db.doc(`${FIREBASE_COLLECTION.FEEDBACK}/${uid}`).set(data);
+
+    return { success: true, results: data };
+  } catch (error) {
+    console.error(error);
+    return { success: false, errorMessage: error.message };
+  }
+};
+
+const getAllFeedbackByUserId = async (userId) => {
+  try {
+    const results = [];
+    const { docs: allFeedbacksByUser } = await db
+      .collection(`${FIREBASE_COLLECTION.FEEDBACK}`)
+      .where('userId', '==', userId)
+      .get();
+
+    allFeedbacksByUser.forEach((feedback) => results.push(feedback.data()));
+
+    return { success: true, results };
+  } catch (error) {
+    console.error(error);
+    return { success: false, errorMessage: error.message };
+  }
+};
+
+const getFeedbackAndCommentsByFeedbackId = async (feedbackId) => {
+  try {
+    const results = [];
+    const { docs: comments } = await db
+      .doc(`${FIREBASE_COLLECTION.FEEDBACK}/${feedbackId}`)
+      .collection(FIREBASE_COLLECTION.COMMENT)
+      .get();
+
+    comments.forEach((comment) => results.push(comment.data()));
+    return { success: true, results };
+  } catch (error) {
+    console.error(error);
+    return { success: false, errorMessage: error.message };
+  }
+};
+
 export {
   getUserDataByUid,
   searchReservedSpots,
   reserveParkingSpot,
   getUserBookingDetails,
+  addNewFeedback,
+  getAllFeedbackByUserId,
   cancelParkingReservationById,
+  getFeedbackAndCommentsByFeedbackId,
 };
