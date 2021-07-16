@@ -185,6 +185,28 @@ const addNewFeedback = async ({ message, userId, role }) => {
   }
 };
 
+const addNewComment = async ({ message, userId, role, uid }) => {
+  try {
+    const data = {
+      userId,
+      message,
+      role,
+      date: formatDate(new Date()),
+      time: formatTimeReturnStr(new Date()),
+    };
+
+    await db
+      .doc(`${FIREBASE_COLLECTION.FEEDBACK}/${uid}`)
+      .collection(FIREBASE_COLLECTION.COMMENT)
+      .add(data);
+
+    return { success: true, results: data };
+  } catch (error) {
+    console.error(error);
+    return { success: false, errorMessage: error.message };
+  }
+};
+
 const getAllFeedbackByUserId = async (userId) => {
   try {
     const results = [];
@@ -224,6 +246,7 @@ export {
   reserveParkingSpot,
   getUserBookingDetails,
   addNewFeedback,
+  addNewComment,
   getAllFeedbackByUserId,
   cancelParkingReservationById,
   getFeedbackAndCommentsByFeedbackId,

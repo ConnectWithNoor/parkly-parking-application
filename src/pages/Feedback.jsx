@@ -15,6 +15,7 @@ import {
   getAllFeedbackByUserId,
   getFeedbackAndCommentsByFeedbackId,
   addNewFeedback,
+  addNewComment,
 } from '../firebase/firebaseDb';
 
 const { TextArea } = Input;
@@ -98,7 +99,7 @@ function Feedback() {
     setShowModal(false);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmitUser = async () => {
     try {
       setIsLoading(true);
       const { success, results, errorMessage } = await addNewFeedback({
@@ -130,12 +131,45 @@ function Feedback() {
     }
   };
 
+  const handleSubmitRoot = async () => {
+    try {
+      setIsLoading(true);
+      const { success, results, errorMessage } = await addNewComment({
+        message: feedbackMessage,
+        userId: userDetails.id,
+        role: userDetails.role,
+        uid: selectedRow.uid,
+      });
+
+      if (errorMessage) {
+        return errorNotification({
+          title: 'Error occured',
+          description: errorMessage,
+          duration: 2,
+        });
+      }
+      if (success) {
+        setAdminReply((prev) => [results, ...prev]);
+        setFeedbackMessage(null);
+        return successNotification({
+          title: 'Feedback Added successfully',
+          description: errorMessage,
+          duration: 2,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <AppLayout>
       <div className='w-75 m-auto'>
         <div className='bg-gray-3 t-center radius-1 p-1rem '>
           <div className='w-100 bg-white font-size-2 t-center radius-1 p-1rem'>
-            <p className='pt-1rem f-bold '>Please select the parking section</p>
+            <p className='pt-1rem f-bold '>Feedbacks</p>
           </div>
           <Spin spinning={isLoading}>
             <Table
@@ -152,22 +186,26 @@ function Feedback() {
               }}
             />
           </Spin>
-          <div className='mt-1rem'>
-            <TextArea
-              rows={4}
-              value={feedbackMessage}
-              onChange={handleChange}
-              placeholder='Feedback Message Here'
-            />
-          </div>
-          <div className='mt-1rem'>
-            <Button
-              type='primary bg-dark'
-              onClick={handleSubmit}
-              disabled={!feedbackMessage || isLoading}>
-              Submit Feedback
-            </Button>
-          </div>
+          {userDetails.role === 'user' && (
+            <>
+              <div className='mt-1rem'>
+                <TextArea
+                  rows={4}
+                  value={feedbackMessage}
+                  onChange={handleChange}
+                  placeholder='Feedback Message Here'
+                />
+              </div>
+              <div className='mt-1rem'>
+                <Button
+                  type='primary bg-dark'
+                  onClick={handleSubmitUser}
+                  disabled={!feedbackMessage || isLoading}>
+                  Submit Feedback
+                </Button>
+              </div>
+            </>
+          )}
 
           {/* modal */}
           <Modal
@@ -198,6 +236,27 @@ function Feedback() {
                       className='mt-1rem'
                     />
                   ))}
+
+                  {userDetails.role === 'root' && (
+                    <Spin spinning={isLoading}>
+                      <div className='mt-1rem'>
+                        <TextArea
+                          rows={4}
+                          value={feedbackMessage}
+                          onChange={handleChange}
+                          placeholder='Feedback Message Here'
+                        />
+                      </div>
+                      <div className='mt-1rem'>
+                        <Button
+                          type='primary bg-dark'
+                          onClick={handleSubmitRoot}
+                          disabled={!feedbackMessage || isLoading}>
+                          Submit Feedback
+                        </Button>
+                      </div>
+                    </Spin>
+                  )}
                 </div>
               </div>
             </Spin>
