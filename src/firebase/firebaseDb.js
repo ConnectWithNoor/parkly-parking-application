@@ -116,51 +116,44 @@ const reserveParkingSpot = async ({
   }
 };
 
-const getUserBookingDetails = async ({ userId }) => {
+const getUserBookingDetails = async ({ userId, sectionId }) => {
   try {
     const results = [];
     const userRef = db.doc(`${FIREBASE_COLLECTION.USERS}/${userId}`);
-    const { docs: reservedSpotsSection_1 } = await db
-      .doc(`/${FIREBASE_COLLECTION.PARKING_SPOTS}/section_1/`)
+    const { docs: reservedSpots } = await db
+      .doc(`/${FIREBASE_COLLECTION.PARKING_SPOTS}/section_${sectionId}/`)
       .collection(`${FIREBASE_COLLECTION.RESERVATIONS}`)
       .where('user_id', '==', userRef)
       .get();
 
-    const { docs: reservedSpotsSection_2 } = await db
-      .doc(`/${FIREBASE_COLLECTION.PARKING_SPOTS}/section_2/`)
-      .collection(`${FIREBASE_COLLECTION.RESERVATIONS}`)
-      .where('user_id', '==', userRef)
-      .get();
-
-    const { docs: reservedSpotsSection_3 } = await db
-      .doc(`/${FIREBASE_COLLECTION.PARKING_SPOTS}/section_3/`)
-      .collection(`${FIREBASE_COLLECTION.RESERVATIONS}`)
-      .where('user_id', '==', userRef)
-      .get();
-
-    reservedSpotsSection_1.forEach((item, index) =>
+    reservedSpots.forEach((item, index) =>
       results.push({
         ...item.data(),
-        sectionId: 1,
-        key: `${index * 3}`,
-      })
-    );
-    reservedSpotsSection_2.forEach((item, index) =>
-      results.push({
-        ...item.data(),
-        sectionId: 2,
-        key: `${index * 7}`,
-      })
-    );
-    reservedSpotsSection_3.forEach((item, index) =>
-      results.push({
-        ...item.data(),
-        sectionId: 3,
-        key: `${index * 19}`,
+        sectionId,
       })
     );
 
     return { success: true, results };
+  } catch (error) {
+    console.error(error);
+    return { success: false, errorMessage: error.message };
+  }
+};
+
+const cancelParkingReservationById = async (
+  sectionId,
+  bookingId,
+  setIsDeleted
+) => {
+  try {
+    await db
+      .doc(
+        `/${FIREBASE_COLLECTION.PARKING_SPOTS}/section_${sectionId}/${FIREBASE_COLLECTION.RESERVATIONS}/${bookingId}`
+      )
+      .delete();
+
+    setIsDeleted(true);
+    return { success: true };
   } catch (error) {
     console.error(error);
     return { success: false, errorMessage: error.message };
@@ -172,4 +165,5 @@ export {
   searchReservedSpots,
   reserveParkingSpot,
   getUserBookingDetails,
+  cancelParkingReservationById,
 };

@@ -89,6 +89,12 @@ function BookVehicle() {
   };
 
   const handleShowSpots = async () => {
+    if (!parkingDetails?.sectionId)
+      return errorNotification({
+        title: 'An Error Occured',
+        description: 'Please select the Parking Section First',
+        duration: 2,
+      });
     try {
       setLoading(true);
 
@@ -166,7 +172,7 @@ function BookVehicle() {
       <div className='w-75 m-auto'>
         <div className='bg-gray-3 t-center radius-1'>
           <p className='pt-1rem f-bold'>
-            You have Selected Parking Section: {parkingDetails.sectionId}
+            You have Selected Parking Section: {parkingDetails?.sectionId}
           </p>
           <div className='p-1rem'>
             <Spin spinning={loading}>
