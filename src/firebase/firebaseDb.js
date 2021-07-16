@@ -140,6 +140,28 @@ const getUserBookingDetails = async ({ userId, sectionId }) => {
   }
 };
 
+const getAllUsersBookingDetails = async ({ sectionId }) => {
+  try {
+    const results = [];
+    const { docs: reservedSpots } = await db
+      .doc(`/${FIREBASE_COLLECTION.PARKING_SPOTS}/section_${sectionId}/`)
+      .collection(`${FIREBASE_COLLECTION.RESERVATIONS}`)
+      .get();
+
+    reservedSpots.forEach((item, index) =>
+      results.push({
+        ...item.data(),
+        sectionId,
+      })
+    );
+
+    return { success: true, results };
+  } catch (error) {
+    console.error(error);
+    return { success: false, errorMessage: error.message };
+  }
+};
+
 const cancelParkingReservationById = async (
   sectionId,
   bookingId,
@@ -245,6 +267,7 @@ export {
   searchReservedSpots,
   reserveParkingSpot,
   getUserBookingDetails,
+  getAllUsersBookingDetails,
   addNewFeedback,
   addNewComment,
   getAllFeedbackByUserId,

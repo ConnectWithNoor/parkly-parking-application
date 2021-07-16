@@ -4,7 +4,10 @@ import { Table, Spin, Select } from 'antd';
 import AppLayout from '../Layout/AppLayout';
 import { columnData } from '../utils/userViewBookingTableColumn';
 
-import { getUserBookingDetails } from '../firebase/firebaseDb';
+import {
+  getUserBookingDetails,
+  getAllUsersBookingDetails,
+} from '../firebase/firebaseDb';
 import { AppContext } from '../context/AppContext';
 import {
   errorNotification,
@@ -22,7 +25,7 @@ function ViewBooking() {
   const { userDetails } = useContext(AppContext);
 
   useEffect(() => {
-    const checkBooking = async () => {
+    const checkBookingByUser = async () => {
       if (!sectionId) return setTableData(null);
       try {
         setLoading(true);
@@ -47,8 +50,37 @@ function ViewBooking() {
         setLoading(false);
       }
     };
-    checkBooking();
-  }, [sectionId, userDetails.id]);
+
+    const checkBookingByRoot = async () => {
+      if (!sectionId) return setTableData(null);
+      try {
+        setLoading(true);
+        const { success, results, errorMessage } =
+          await getAllUsersBookingDetails({
+            sectionId,
+          });
+
+        if (errorMessage) {
+          return errorNotification({
+            title: 'Error Occured',
+            description: errorMessage,
+          });
+        }
+
+        if (success) {
+          console.log(results);
+          setTableData(results);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    userDetails.role === 'user' && checkBookingByUser();
+    userDetails.role === 'root' && checkBookingByRoot();
+  }, [sectionId, userDetails]);
 
   useEffect(() => {
     const checkIsDeleted = () => {
