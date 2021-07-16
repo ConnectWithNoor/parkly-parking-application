@@ -11,6 +11,7 @@ Made with love using ReactJS ❤
 - ReactJS
 - Firebase Hosting
 - Firebase Firestore DB
+- Firebase Authentication
 
 ## Libraries Used
 
@@ -20,6 +21,10 @@ Made with love using ReactJS ❤
 - Moment
 - dotenv
 - uuidv4
+
+## Services
+
+- EmailJS
 
 ## Features
 

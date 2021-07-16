@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Divider, Row, Button, Spin } from 'antd';
+import { send } from 'emailjs-com';
 
 import AppLayout from '../../Layout/AppLayout';
 
@@ -146,11 +147,21 @@ function BookVehicle() {
       }
 
       if (success) {
+        await send(
+          process.env.REACT_APP_EMAILJS_SERVICE_ID,
+          process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+          {
+            to_name: 'connectwithnoor1@gmail.com',
+          },
+          process.env.REACT_APP_EMAILJS_USER_ID
+        );
         successNotification({
           title: 'Reservation Successful',
-          description: 'You have successfully reserved your parking spot.',
+          description:
+            'Please check your email forYou have successfully reserved your parking spot.',
           duration: 2,
         });
+
         setBookingDate(null);
         setBookingTime(null);
         setNoOfHour(null);
