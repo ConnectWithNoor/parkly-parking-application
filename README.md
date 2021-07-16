@@ -19,6 +19,7 @@ Made with love using ReactJS ❤
 - @ant-design/icons
 - Moment
 - dotenv
+- uuidv4
 
 ## Features
 

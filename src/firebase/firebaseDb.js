@@ -1,4 +1,6 @@
 import moment from 'moment';
+import { uuid } from 'uuidv4';
+
 import { db } from './firebase';
 
 import { FIREBASE_COLLECTION } from '../utils/constants';
@@ -92,10 +94,13 @@ const reserveParkingSpot = async ({
   userId,
 }) => {
   try {
+    const uid = uuid();
     await db
-      .doc(`/${FIREBASE_COLLECTION.PARKING_SPOTS}/section_${sectionId}/`)
-      .collection(`${FIREBASE_COLLECTION.RESERVATIONS}`)
-      .add({
+      .doc(
+        `/${FIREBASE_COLLECTION.PARKING_SPOTS}/section_${sectionId}/${FIREBASE_COLLECTION.RESERVATIONS}/${uid}`
+      )
+      .set({
+        uid,
         date: formatDate(date),
         start_time: formatTimeReturnStr(startTime),
         end_time: addHoursAndFormatHours(startTime, noOfHour),
