@@ -54,7 +54,7 @@ function ViewBooking() {
     const checkIsDeleted = () => {
       if (!isDeleted) return;
 
-      setTableData(null);
+      setSectionId(null);
 
       successNotification({
         title: 'Parking Reservation Cancelled',
@@ -95,7 +95,7 @@ function ViewBooking() {
             <Spin spinning={loading}>
               <Table
                 dataSource={tableData}
-                columns={columnData(sectionId, setIsDeleted)}
+                columns={columnData(sectionId, setIsDeleted, setLoading)}
                 rowKey='uid'
                 pagination={{
                   pageSize: 5,

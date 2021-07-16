@@ -6,6 +6,7 @@ const FIREBASE_COLLECTION = {
 
 const MOMENT_FORMAT = {
   HOURS: 'HH',
+  HOURS_12: 'hh',
   MINUTES: 'mm',
   DATE: 'MM-DD-YYYY',
 };

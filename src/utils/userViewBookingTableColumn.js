@@ -1,8 +1,9 @@
-import { Button, Space } from 'antd';
+import { Button, Space, Popconfirm } from 'antd';
 
 import { cancelParkingReservationById } from '../firebase/firebaseDb';
+import { format_12_hoursTimeReturnStr } from '../utils/functions/momentTimeAndDate';
 
-const columnData = (sectionId, setIsDeleted) => [
+const columnData = (sectionId, setIsDeleted, setLoading) => [
   {
     title: 'Parking Slot',
     dataIndex: 'spot_id',
@@ -23,7 +24,9 @@ const columnData = (sectionId, setIsDeleted) => [
     key: 'start_time',
     align: 'center',
 
-    render: (text) => <div className='t-center'>{text}</div>,
+    render: (text) => (
+      <div className='t-center'>{format_12_hoursTimeReturnStr(text)}</div>
+    ),
   },
   {
     title: 'End Time',
@@ -31,7 +34,9 @@ const columnData = (sectionId, setIsDeleted) => [
     key: 'end_time',
     align: 'center',
 
-    render: (text) => <div className='t-center'>{text}</div>,
+    render: (text) => (
+      <div className='t-center'>{format_12_hoursTimeReturnStr(text)}</div>
+    ),
   },
   {
     title: 'Total Hours',
@@ -39,7 +44,7 @@ const columnData = (sectionId, setIsDeleted) => [
     key: 'no_of_hour',
     align: 'center',
 
-    render: (text) => <div className='t-center'>{text}</div>,
+    render: (text) => <div className='t-center'>{text} Hrs</div>,
   },
   {
     title: '',
@@ -52,7 +57,12 @@ const columnData = (sectionId, setIsDeleted) => [
             type='primary'
             className='bg-dark'
             onClick={() =>
-              cancelParkingReservationById(sectionId, data.uid, setIsDeleted)
+              cancelParkingReservationById(
+                sectionId,
+                data.uid,
+                setIsDeleted,
+                setLoading
+              )
             }>
             Cancel
           </Button>

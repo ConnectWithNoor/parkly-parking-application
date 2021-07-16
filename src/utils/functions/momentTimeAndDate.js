@@ -7,7 +7,9 @@ const addHours = (time, hour) => {
 };
 
 const addHoursAndFormatHours = (time, hour) => {
-  return moment(time).add(hour, 'h').format(MOMENT_FORMAT.HOURS);
+  return moment(time)
+    .add(hour, 'h')
+    .format(`${MOMENT_FORMAT.HOURS}:${MOMENT_FORMAT.MINUTES}`);
 };
 
 const formatHours = (time) => {
@@ -26,6 +28,12 @@ const formatTimeReturnStr = (time) => {
   return moment(time).format(`${MOMENT_FORMAT.HOURS}:${MOMENT_FORMAT.MINUTES}`);
 };
 
+const format_12_hoursTimeReturnStr = (time) => {
+  return moment(time, 'HH').format(
+    `${MOMENT_FORMAT.HOURS_12}:${MOMENT_FORMAT.MINUTES} A`
+  );
+};
+
 export {
   addHours,
   addHoursAndFormatHours,
@@ -33,4 +41,5 @@ export {
   formatDate,
   formatTime,
   formatTimeReturnStr,
+  format_12_hoursTimeReturnStr,
 };

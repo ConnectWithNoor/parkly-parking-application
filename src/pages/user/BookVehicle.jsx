@@ -43,15 +43,14 @@ function BookVehicle() {
   };
 
   const handleTimeChange = (time) => {
+    if (!time) return setBookingTime(null);
     if (!bookingDate)
       return errorNotification({
         title: 'Oops!',
         description: 'Please select date first',
         duration: 2,
       });
-
     const reservedTime = formatHours(time);
-
     // from 8 AM to 5 PM
     if (reservedTime >= 8 && reservedTime <= 17) {
       setNoOfHour(null);
@@ -76,8 +75,7 @@ function BookVehicle() {
       });
 
     const reservingHours = addHoursAndFormatHours(bookingTime, hour);
-
-    if (reservingHours >= 8 && reservingHours <= 18) {
+    if (reservingHours >= '08:00' && reservingHours <= '18:00') {
       setNoOfHour(hour);
       setShowSpots(null);
     } else

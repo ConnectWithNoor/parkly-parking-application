@@ -143,9 +143,11 @@ const getUserBookingDetails = async ({ userId, sectionId }) => {
 const cancelParkingReservationById = async (
   sectionId,
   bookingId,
-  setIsDeleted
+  setIsDeleted,
+  setLoading
 ) => {
   try {
+    setLoading(true);
     await db
       .doc(
         `/${FIREBASE_COLLECTION.PARKING_SPOTS}/section_${sectionId}/${FIREBASE_COLLECTION.RESERVATIONS}/${bookingId}`
@@ -157,6 +159,8 @@ const cancelParkingReservationById = async (
   } catch (error) {
     console.error(error);
     return { success: false, errorMessage: error.message };
+  } finally {
+    setLoading(false);
   }
 };
 
