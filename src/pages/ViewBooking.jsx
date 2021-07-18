@@ -68,7 +68,6 @@ function ViewBooking() {
         }
 
         if (success) {
-          console.log(results);
           setTableData(results);
         }
       } catch (error) {

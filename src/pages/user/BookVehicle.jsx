@@ -151,7 +151,7 @@ function BookVehicle() {
           process.env.REACT_APP_EMAILJS_SERVICE_ID,
           process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
           {
-            to_name: 'connectwithnoor1@gmail.com',
+            to_name: userDetails.email,
           },
           process.env.REACT_APP_EMAILJS_USER_ID
         );

@@ -49,7 +49,6 @@ const getAllUsersData = async () => {
 };
 
 const changeUserStatus = async (userId, status) => {
-  console.log(userId, status);
   try {
     await db
       .doc(`${FIREBASE_COLLECTION.USERS}/${userId}`)
@@ -281,6 +280,22 @@ const getAllFeedbackByUserId = async (userId) => {
   }
 };
 
+const getAllFeedbacks = async (userId) => {
+  try {
+    const results = [];
+    const { docs: allFeedbacksByUser } = await db
+      .collection(`${FIREBASE_COLLECTION.FEEDBACK}`)
+      .get();
+
+    allFeedbacksByUser.forEach((feedback) => results.push(feedback.data()));
+
+    return { success: true, results };
+  } catch (error) {
+    console.error(error);
+    return { success: false, errorMessage: error.message };
+  }
+};
+
 const getFeedbackAndCommentsByFeedbackId = async (feedbackId) => {
   try {
     const results = [];
@@ -310,4 +325,5 @@ export {
   getAllFeedbackByUserId,
   cancelParkingReservationById,
   getFeedbackAndCommentsByFeedbackId,
+  getAllFeedbacks,
 };

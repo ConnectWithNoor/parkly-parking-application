@@ -40,10 +40,6 @@ Made with love using ReactJS ❤
 
 - EmailJS
 
-## Features
-
--
-
 ## Terminal Commands
 
 To get started, Follow the comments sequentially

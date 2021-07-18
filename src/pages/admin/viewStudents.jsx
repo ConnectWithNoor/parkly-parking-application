@@ -72,7 +72,9 @@ function ViewStudents() {
   return (
     <AppLayout>
       <div className='w-75 m-auto'>
-        <div className='bg-gray-3 t-center radius-1 p-1rem'>
+        <div className='bg-gray-3 t-center radius-1 p-1rem font-size-2'>
+          <p className='pt-1rem f-bold '>Student's List</p>
+
           <Spin spinning={loading}>
             <Table
               dataSource={tableData}

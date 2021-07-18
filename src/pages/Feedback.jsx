@@ -14,6 +14,7 @@ import AppLayout from '../Layout/AppLayout';
 import {
   getAllFeedbackByUserId,
   getFeedbackAndCommentsByFeedbackId,
+  getAllFeedbacks,
   addNewFeedback,
   addNewComment,
 } from '../firebase/firebaseDb';
@@ -32,7 +33,7 @@ function Feedback() {
   const { userDetails } = useContext(AppContext);
 
   useEffect(() => {
-    const checkFeedback = async () => {
+    const checkFeedbackByUser = async () => {
       try {
         setIsLoading(true);
         const { success, results, errorMessage } = await getAllFeedbackByUserId(
@@ -56,7 +57,30 @@ function Feedback() {
       }
     };
 
-    checkFeedback();
+    const checkFeedbackByRoot = async () => {
+      try {
+        setIsLoading(true);
+        const { success, results, errorMessage } = await getAllFeedbacks();
+        if (errorMessage) {
+          return errorNotification({
+            title: 'Error occured',
+            description: errorMessage,
+            duration: 2,
+          });
+        }
+
+        if (success) {
+          setTableData(results);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    userDetails.role === 'user' && checkFeedbackByUser();
+    userDetails.role === 'root' && checkFeedbackByRoot();
   }, [userDetails]);
 
   useEffect(() => {
