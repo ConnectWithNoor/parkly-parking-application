@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import SuspenseLoader from '../components/Suspense/SuspenseLoader';
 
+import { AppContext } from '../context/AppContext';
+
 const AuthRoute = ({ component: Component, ...rest }) => {
-  const isAuth = true;
+  const { userDetails } = useContext(AppContext);
+
   return (
     <Route
       {...rest}
       render={(props) =>
-        isAuth ? (
+        userDetails ? (
           <SuspenseLoader>
             <Component {...props} />
           </SuspenseLoader>
